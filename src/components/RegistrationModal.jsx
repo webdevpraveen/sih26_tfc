@@ -9,10 +9,12 @@ export default function RegistrationModal({ isOpen, onClose, onProceed }) {
   return (
     <div className="modal-overlay">
       <div className="modal-content registration-modal">
-        <button className="modal-close" onClick={onClose}>×</button>
         
-        <h2 className="modal-title">SIH 2026 – Team Guidelines</h2>
-        <p className="modal-subtitle">Please read the instructions carefully before proceeding.</p>
+        <div className="modal-header">
+          <button className="modal-close" onClick={onClose}>×</button>
+          <h2 className="modal-title">SIH 2026 – Team Guidelines</h2>
+          <p className="modal-subtitle">Please read the instructions carefully before proceeding.</p>
+        </div>
         
         <div className="guidelines-scroll-area">
           <h3>Team Eligibility & Composition</h3>
@@ -64,33 +66,37 @@ export default function RegistrationModal({ isOpen, onClose, onProceed }) {
           <div className="guidelines-note">
             <strong>Important Note:</strong> The Team Leader is advised to complete the entire form only after collecting and verifying the required information from all team members. Once the form is submitted, no changes will be entertained.
           </div>
+          
+          <div style={{ marginTop: '40px', paddingTop: '20px', borderTop: '1px solid #e2e8f0' }}>
+            <label className="agreement-checkbox">
+              <input 
+                type="checkbox" 
+                checked={hasAgreed} 
+                onChange={(e) => setHasAgreed(e.target.checked)} 
+              />
+              <span>I have carefully read and agreed to all the guidelines and instructions above.</span>
+            </label>
+          </div>
         </div>
 
-        <div className="modal-footer-actions">
-          <label className="agreement-checkbox">
-            <input 
-              type="checkbox" 
-              checked={hasAgreed} 
-              onChange={(e) => setHasAgreed(e.target.checked)} 
-            />
-            <span>I have carefully read and agreed to all the guidelines and instructions above.</span>
-          </label>
-          
-          <div className="modal-buttons">
-            <button className="btn-secondary" onClick={onClose}>Cancel</button>
-            <button 
-              className="btn-primary" 
-              onClick={() => {
-                if (hasAgreed) {
-                  onProceed();
-                  onClose();
-                  setHasAgreed(false); // reset for next time
-                }
-              }}
-              disabled={!hasAgreed}
-            >
-              Proceed to Registration
-            </button>
+        <div className="modal-footer">
+          <div className="modal-footer-actions">
+            <div className="modal-buttons">
+              <button className="btn-secondary" onClick={onClose}>Cancel</button>
+              <button 
+                className="btn-primary" 
+                onClick={() => {
+                  if (hasAgreed) {
+                    onProceed();
+                    onClose();
+                    setHasAgreed(false);
+                  }
+                }}
+                disabled={!hasAgreed}
+              >
+                Proceed to Registration
+              </button>
+            </div>
           </div>
         </div>
       </div>
