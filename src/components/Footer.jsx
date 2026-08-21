@@ -28,6 +28,7 @@ export default function Footer() {
               <div className="footer-link-list">
                 <Link to="/" className="footer-link">→ Home</Link>
                 <a href="https://sih.gov.in/sih2026PS" target="_blank" rel="noopener noreferrer" className="footer-link">→ Problem Statements</a>
+                <a href="https://docs.google.com/presentation/d/1zfTdID53p_wxCmviVm_itbp7XmPOmuu1/" target="_blank" rel="noopener noreferrer" className="footer-link">→ PPT Format Template</a>
                 <Link to="/timeline" className="footer-link">→ Timeline</Link>
                 <Link to="/teams" className="footer-link">→ Registered Teams</Link>
                 <Link to="/notices" className="footer-link">→ Notices & Alerts</Link>

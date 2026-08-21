@@ -66,6 +66,22 @@ export default function Home() {
                 Explore Problems
               </a>
             </div>
+            
+            <div style={{ marginTop: '20px' }}>
+              <a 
+                href="https://docs.google.com/presentation/d/1zfTdID53p_wxCmviVm_itbp7XmPOmuu1/" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                style={{ 
+                  color: 'var(--sih-blue)', 
+                  textDecoration: 'underline', 
+                  fontWeight: '600',
+                  fontSize: '0.95rem'
+                }}
+              >
+                📥 Download PPT Format for Idea Presentation
+              </a>
+            </div>
 
             <div className="hero-club-tag">
               <span>Organized by </span>
