@@ -1,0 +1,137 @@
+/* ═══════════════════════════════════════════
+   NOTICES PAGE
+   ═══════════════════════════════════════════ */
+
+.notices-page {
+  padding-top: 100px;
+  min-height: 100vh;
+}
+
+.notices-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.notices-list {
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.notice-card {
+  background: #ffffff;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  padding: 28px;
+  transition: all var(--transition);
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+.notice-card:hover {
+  border-color: var(--sih-blue);
+  transform: translateX(4px);
+  box-shadow: var(--shadow-md);
+}
+
+.notice-card::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+}
+
+.notice-card.priority-normal::before {
+  background: var(--sih-blue);
+}
+
+.notice-card.priority-important::before {
+  background: var(--warning);
+}
+
+.notice-card.priority-urgent::before {
+  background: var(--danger);
+  animation: glow 2s ease-in-out infinite;
+}
+
+.notice-card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.notice-title {
+  font-family: var(--font-heading);
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--sih-blue);
+}
+
+.notice-priority-badge {
+  flex-shrink: 0;
+}
+
+.notice-description {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.7;
+  margin-bottom: 12px;
+}
+
+.notice-meta {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  color: var(--text-muted);
+  font-size: 0.82rem;
+  font-weight: 500;
+}
+
+.notice-date {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.notice-filter-tabs {
+  display: flex;
+  gap: 4px;
+  justify-content: center;
+  margin-bottom: 32px;
+  background: #ffffff;
+  border-radius: var(--border-radius-sm);
+  padding: 4px;
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-sm);
+}
+
+.notice-filter-tab {
+  padding: 8px 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  background: transparent;
+  border-radius: 6px;
+  transition: all var(--transition);
+  text-transform: capitalize;
+}
+
+.notice-filter-tab.active {
+  background: var(--sih-blue);
+  color: #fff;
+}
+
+.notice-filter-tab:hover:not(.active) {
+  color: var(--sih-blue);
+  background: rgba(35, 62, 79, 0.05);
+}

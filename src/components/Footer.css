@@ -1,0 +1,137 @@
+.footer {
+  background: var(--bg-secondary);
+  border-top: 1px solid var(--border-color);
+  margin-top: auto;
+}
+
+.footer-main {
+  padding: 60px 0 40px;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1.2fr;
+  gap: 50px;
+}
+
+/* ── Brand Column ── */
+.footer-brand-logos {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.footer-left-banner {
+  height: 44px; /* Adjust as needed */
+  width: auto;
+  opacity: 0.9;
+}
+
+.footer-brand-text {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.7;
+  max-width: 400px;
+}
+
+.footer-partner-logos {
+  display: flex;
+  align-items: center;
+  margin-top: 24px;
+}
+
+.footer-right-banner {
+  height: 36px; /* Adjust as needed */
+  width: auto;
+  opacity: 0.8;
+  transition: opacity var(--transition);
+}
+
+.footer-right-banner:hover {
+  opacity: 1;
+}
+
+/* ── Quick Links ── */
+.footer-heading {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--text-primary);
+  margin-bottom: 24px;
+}
+
+.footer-link-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.footer-link {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  transition: all var(--transition);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.footer-link:hover {
+  color: var(--sih-orange);
+  transform: translateX(4px);
+}
+
+/* ── Contact ── */
+.footer-contact-item {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 16px;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.footer-contact-icon {
+  font-size: 1.1rem;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.footer-contact-label {
+  font-weight: 700;
+  color: var(--sih-blue);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 2px;
+}
+
+/* ── Bottom Bar ── */
+.footer-bottom {
+  border-top: 1px solid var(--border-color);
+  padding: 20px 0;
+  text-align: center;
+}
+
+.footer-copyright {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+.footer-copyright a {
+  color: var(--sih-orange);
+  font-weight: 500;
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .footer-grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .footer-main {
+    padding: 40px 0 30px;
+  }
+}

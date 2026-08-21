@@ -1,0 +1,74 @@
+import { Link } from 'react-router-dom';
+import './Footer.css';
+
+export default function Footer() {
+  return (
+    <footer className="footer">
+      <div className="container">
+        <div className="footer-main">
+          <div className="footer-grid">
+            {/* Brand */}
+            <div>
+              <div className="footer-brand-logos">
+                <img src="/sih-logos/leftbanner.png" alt="SRMU SIH 2026" className="footer-left-banner" />
+              </div>
+              <p className="footer-brand-text">
+                Empowering students to solve the most pressing challenges 
+                of our time through innovation, collaboration, and technology. 
+                Organized by Tech Fusion Club, SRMU.
+              </p>
+              <div className="footer-partner-logos">
+                <img src="/sih-logos/rightbanner.png" alt="Ministry of Education & SIH Partners" className="footer-right-banner" />
+              </div>
+            </div>
+
+            {/* Quick Links */}
+            <div>
+              <h3 className="footer-heading">Quick Links</h3>
+              <div className="footer-link-list">
+                <Link to="/" className="footer-link">→ Home</Link>
+                <a href="https://sih.gov.in/sih2026PS" target="_blank" rel="noopener noreferrer" className="footer-link">→ Problem Statements</a>
+                <Link to="/timeline" className="footer-link">→ Timeline</Link>
+                <Link to="/teams" className="footer-link">→ Registered Teams</Link>
+                <Link to="/notices" className="footer-link">→ Notices & Alerts</Link>
+              </div>
+            </div>
+
+            {/* Contact */}
+            <div>
+              <h3 className="footer-heading">Contact Us</h3>
+              <div className="footer-contact-item">
+                <span className="footer-contact-icon">📍</span>
+                <div>
+                  Shri Ramswaroop Memorial University,<br />
+                  Lucknow-Deva Road, Barabanki,<br />
+                  Uttar Pradesh - 225003
+                </div>
+              </div>
+              <div className="footer-contact-item">
+                <span className="footer-contact-icon">🏫</span>
+                <div>
+                  <div className="footer-contact-label">Organized By</div>
+                  Tech Fusion Club, SRMU
+                </div>
+              </div>
+              <div className="footer-contact-item">
+                <span className="footer-contact-icon">📧</span>
+                <div>
+                  <div className="footer-contact-label">Email</div>
+                  techfusionclub@srmu.ac.in
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="footer-bottom">
+          <p className="footer-copyright">
+            © 2026 Smart India Hackathon '26 — <a href="https://srmu.ac.in" target="_blank" rel="noopener noreferrer">Shri Ramswaroop Memorial University</a>. All rights reserved.
+          </p>
+        </div>
+      </div>
+    </footer>
+  );
+}
