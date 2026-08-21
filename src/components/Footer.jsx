@@ -66,10 +66,10 @@ export default function Footer() {
         <div className="footer-bottom">
           <div className="footer-bottom-content">
             <p className="footer-copyright">
-              © 2026 Smart India Hackathon '26 — <a href="https://srmu.ac.in" target="_blank" rel="noopener noreferrer">Tech Fusion Club</a>. All rights reserved.
+              © 2026 Smart India Hackathon '26 — <span className="footer-brand-highlight">Tech Fusion Club</span>. All rights reserved.
             </p>
             <p className="footer-developer">
-              Designed and Developed by <strong>Praveen</strong>
+              Designed and Developed by <a href="https://praveenksingh.vercel.app" target="_blank" rel="noopener noreferrer"><strong>Praveen</strong></a>
             </p>
           </div>
         </div>
