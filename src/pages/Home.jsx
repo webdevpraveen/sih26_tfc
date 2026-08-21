@@ -59,12 +59,12 @@ export default function Home() {
             </p>
 
             <div className="hero-actions">
-              <a href="https://sih.gov.in/sih2026PS" target="_blank" rel="noopener noreferrer" className="hero-register-btn">
+              <a href="#" className="hero-register-btn">
+                Register
+              </a>
+              <a href="https://sih.gov.in/sih2026PS" target="_blank" rel="noopener noreferrer" className="hero-explore-btn">
                 Explore Problems
               </a>
-              <Link to="/timeline" className="hero-explore-btn">
-                View Timeline
-              </Link>
             </div>
 
             <div className="hero-club-tag">
