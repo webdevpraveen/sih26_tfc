@@ -1,10 +1,12 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useFirestore } from '../hooks/useFirestore';
 import { defaultTimeline } from '../data/themes';
+import RegistrationModal from '../components/RegistrationModal';
 import './Timeline.css';
 
 export default function Timeline() {
   const { data: firestoreTimeline, loading } = useFirestore('timeline');
+  const [isRegistrationModalOpen, setIsRegistrationModalOpen] = useState(false);
 
   const timeline = firestoreTimeline.length > 0
     ? firestoreTimeline.sort((a, b) => (a.order || 0) - (b.order || 0))
@@ -57,9 +59,13 @@ export default function Timeline() {
                     {event.status || 'Upcoming'}
                   </span>
                   {event.link && (
-                    <a href={event.link} target="_blank" rel="noopener noreferrer" className="timeline-action-link">
+                    <button 
+                      onClick={() => setIsRegistrationModalOpen(true)} 
+                      className="timeline-action-link"
+                      style={{ border: 'none', cursor: 'pointer', fontFamily: 'inherit' }}
+                    >
                       Register Now →
-                    </a>
+                    </button>
                   )}
                 </div>
               </div>
@@ -67,6 +73,12 @@ export default function Timeline() {
           ))}
         </div>
       </div>
+      
+      <RegistrationModal 
+        isOpen={isRegistrationModalOpen} 
+        onClose={() => setIsRegistrationModalOpen(false)} 
+        onProceed={() => window.open('#', '_blank')} 
+      />
     </div>
   );
 }

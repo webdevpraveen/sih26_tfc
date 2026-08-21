@@ -1,12 +1,14 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { sihThemes, defaultTimeline } from '../data/themes';
 import { useFirestore } from '../hooks/useFirestore';
+import RegistrationModal from '../components/RegistrationModal';
 import './Home.css';
 
 export default function Home() {
   const sectionRefs = useRef([]);
   const { data: notices } = useFirestore('notices');
+  const [isRegistrationModalOpen, setIsRegistrationModalOpen] = useState(false);
 
   // Intersection Observer for scroll reveal
   useEffect(() => {
@@ -59,27 +61,11 @@ export default function Home() {
             </p>
 
             <div className="hero-actions">
-              <a href="#" className="hero-register-btn">
+              <button onClick={() => setIsRegistrationModalOpen(true)} className="hero-register-btn" style={{ border: 'none', cursor: 'pointer', fontFamily: 'inherit', fontSize: '1rem' }}>
                 Register
-              </a>
+              </button>
               <a href="https://sih.gov.in/sih2026PS" target="_blank" rel="noopener noreferrer" className="hero-explore-btn">
                 Explore Problems
-              </a>
-            </div>
-            
-            <div style={{ marginTop: '20px' }}>
-              <a 
-                href="https://docs.google.com/presentation/d/1zfTdID53p_wxCmviVm_itbp7XmPOmuu1/" 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                style={{ 
-                  color: 'var(--sih-blue)', 
-                  textDecoration: 'underline', 
-                  fontWeight: '600',
-                  fontSize: '0.95rem'
-                }}
-              >
-                📥 Download PPT Format for Idea Presentation
               </a>
             </div>
 
@@ -267,6 +253,12 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      <RegistrationModal 
+        isOpen={isRegistrationModalOpen} 
+        onClose={() => setIsRegistrationModalOpen(false)} 
+        onProceed={() => window.open('#', '_blank')} 
+      />
     </div>
   );
 }
