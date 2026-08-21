@@ -64,9 +64,14 @@ export default function Footer() {
         </div>
 
         <div className="footer-bottom">
-          <p className="footer-copyright">
-            © 2026 Smart India Hackathon '26 — <a href="https://srmu.ac.in" target="_blank" rel="noopener noreferrer">Shri Ramswaroop Memorial University</a>. All rights reserved.
-          </p>
+          <div className="footer-bottom-content">
+            <p className="footer-copyright">
+              © 2026 Smart India Hackathon '26 — <a href="https://srmu.ac.in" target="_blank" rel="noopener noreferrer">Tech Fusion Club</a>. All rights reserved.
+            </p>
+            <p className="footer-developer">
+              Designed and Developed by <strong>Praveen</strong>
+            </p>
+          </div>
         </div>
       </div>
     </footer>

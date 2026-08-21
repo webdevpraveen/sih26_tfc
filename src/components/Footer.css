@@ -111,7 +111,14 @@
 .footer-bottom {
   border-top: 1px solid var(--border-color);
   padding: 20px 0;
-  text-align: center;
+}
+
+.footer-bottom-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 15px;
 }
 
 .footer-copyright {
@@ -124,6 +131,16 @@
   font-weight: 500;
 }
 
+.footer-developer {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+}
+
+.footer-developer strong {
+  color: var(--sih-orange);
+  font-weight: 600;
+}
+
 /* ── Responsive ── */
 @media (max-width: 768px) {
   .footer-grid {
@@ -133,5 +150,11 @@
 
   .footer-main {
     padding: 40px 0 30px;
+  }
+  
+  .footer-bottom-content {
+    flex-direction: column;
+    text-align: center;
+    justify-content: center;
   }
 }
