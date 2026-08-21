@@ -1,103 +1,30 @@
-# SIH 2026 | SRMU × Tech Fusion Club
+# SIH 2026 Internal Hackathon Portal
 
-> Smart India Hackathon 2026 — Internal Hackathon Portal  
-> Organized by **Tech Fusion Club**, Shri Ramswaroop Memorial University
+Official internal hackathon management portal for Shri Ramswaroop Memorial University (SRMU), organized by the Tech Fusion Club.
 
-## 🚀 Quick Start
+This platform serves as the central hub for the SIH 2026 internal hackathon, providing students with event timelines, official notices, and team registration details. It includes a secure, real-time administrative control panel for seamless event management.
 
-```bash
-# 1. Clone the repo
-git clone <repo-url>
-cd sih26_tfc
+## Architecture and Tech Stack
 
-# 2. Install dependencies
-npm install
+- Frontend Framework: React.js (via Vite)
+- Routing: React Router v6
+- Backend and Database: Firebase (Authentication and Firestore)
+- Styling: Pure CSS with custom variable design system
 
-# 3. Setup Firebase (see below)
-cp .env.example .env
-# Fill in your Firebase config values
+## Key Features
 
-# 4. Run development server
-npm run dev
-```
+Public Portal:
+- Homepage with event overview and theme browsing
+- Live timeline tracking hackathon phases
+- Real-time notices and alerts board
+- Registered teams directory
+- Direct integration with official SIH problem statements
 
-## 🔧 Firebase Setup (5 minutes)
+Admin Control Panel:
+- Secure email/password authentication
+- Real-time CRUD operations for Notices, Teams, and Timeline events
+- Protected routing preventing unauthorized database writes
 
-1. Go to [Firebase Console](https://console.firebase.google.com/)
-2. Click **Add Project** → Name it `sih26-srmu` → Create
-3. **Enable Authentication:**
-   - Go to Build → Authentication → Get Started
-   - Enable **Email/Password** provider
-   - Go to Users tab → **Add User** → Enter YOUR admin email & password
-4. **Create Firestore Database:**
-   - Go to Build → Firestore Database → Create Database
-   - Start in **test mode** (we'll add rules later)
-5. **Get Web App Config:**
-   - Go to Project Settings (⚙️) → General → Scroll down
-   - Click **Add App** → Web (</>) → Register app
-   - Copy the config object values to your `.env` file
-6. **Add Firestore Security Rules:**
-   - Go to Firestore → Rules → Replace with:
 
-```
-rules_version = '2';
-service cloud.firestore {
-  match /databases/{database}/documents {
-    // Anyone can read
-    match /{document=**} {
-      allow read: if true;
-    }
-    // Only authenticated users can write
-    match /{document=**} {
-      allow write: if request.auth != null;
-    }
-  }
-}
-```
-
-## 📁 Project Structure
-
-```
-src/
-├── components/     → Navbar, Footer, ProtectedRoute
-├── config/         → Firebase initialization
-├── contexts/       → Auth state management
-├── data/           → Static SIH theme data
-├── hooks/          → Firestore CRUD hooks
-├── pages/          → Public pages + Admin panel
-│   └── admin/      → Dashboard, Manage Notices/Teams/Timeline
-└── index.css       → Global design system
-```
-
-## 🔐 Security
-
-- Firebase Auth handles authentication (no passwords in code)
-- Firebase API keys are project identifiers, NOT secrets
-- Firestore Security Rules block unauthorized writes
-- Even with full source code access, no one can login without YOUR credentials
-
-## 🌐 Deployment (Vercel)
-
-1. Push code to GitHub
-2. Go to [vercel.com](https://vercel.com) → Import GitHub repo
-3. Add environment variables in Vercel dashboard:
-   - `VITE_FIREBASE_API_KEY`
-   - `VITE_FIREBASE_AUTH_DOMAIN`
-   - `VITE_FIREBASE_PROJECT_ID`
-   - `VITE_FIREBASE_STORAGE_BUCKET`
-   - `VITE_FIREBASE_MESSAGING_SENDER_ID`
-   - `VITE_FIREBASE_APP_ID`
-4. Deploy! 🎉
-
-## 📋 Admin Panel
-
-Access at `/admin/login` with your Firebase Auth credentials.
-
-Features:
-- 📢 **Manage Notices** — Add/Edit/Delete announcements with priority levels
-- 👥 **Manage Teams** — Track registered teams with members and problem statements
-- 📅 **Manage Timeline** — Update event dates and milestones
-
----
-
-Built with ❤️ by Tech Fusion Club, SRMU
+## Organization
+Maintained by the Tech Fusion Club, SRMU.
