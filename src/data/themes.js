@@ -112,32 +112,26 @@ export const defaultTimeline = [
   },
   {
     date: 'AUG 2026',
-    title: 'SIH Orientation',
-    description: 'Orientation session for all registered teams',
-    status: 'upcoming',
-  },
-  {
-    date: 'AUG 2026',
     title: 'Idea / Prototype Presentation',
-    description: 'Teams present their ideas and initial prototypes',
+    description: 'Teams present their ideas and initial prototypes to mentors',
     status: 'upcoming',
   },
   {
-    date: 'SEP 2026',
-    title: 'Internal Hackathon',
-    description: '36-hour internal hackathon at university campus',
+    date: '1st & 2nd Sept 2026',
+    title: 'Conducting Internal Hackathon for SIH 2026',
+    description: 'TIME: 10:30 AM - 5:00 PM | VENUE: B1 - 007, 207',
     status: 'upcoming',
   },
   {
     date: 'SEP 2026',
     title: 'SIH Portal Submission',
-    description: 'Selected teams submit on official SIH portal',
+    description: 'Selected teams from the internal hackathon are submitted on the official SIH portal',
     status: 'upcoming',
   },
   {
     date: 'OCT-NOV 2026',
     title: 'AICTE Shortlisting',
-    description: 'AICTE shortlists teams for Grand Finale',
+    description: 'AICTE shortlists teams for the National Grand Finale',
     status: 'upcoming',
   },
   {
@@ -145,11 +139,5 @@ export const defaultTimeline = [
     title: 'SIH Grand Finals',
     description: 'National level 36-hour Grand Finale hackathon',
     status: 'upcoming',
-  },
-  {
-    date: 'DEC 2026',
-    title: 'Winners Felicitation',
-    description: 'Recognition and prize distribution ceremony',
-    status: 'upcoming',
-  },
+  }
 ];
