@@ -108,13 +108,8 @@ export const defaultTimeline = [
     date: 'AUG 2026',
     title: 'Internal Team Registration',
     description: 'Teams register through the university portal',
-    status: 'upcoming',
-  },
-  {
-    date: 'AUG 2026',
-    title: 'Idea / Prototype Presentation',
-    description: 'Teams present their ideas and initial prototypes to mentors',
-    status: 'upcoming',
+    status: 'live',
+    link: '#',
   },
   {
     date: '1st & 2nd Sept 2026',

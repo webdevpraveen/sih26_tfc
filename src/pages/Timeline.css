@@ -139,10 +139,31 @@
   border: 1px solid rgba(35, 62, 79, 0.2);
 }
 
-.status-active {
+.status-active, .status-live {
   background: rgba(0, 150, 57, 0.1);
   color: var(--sih-green-dark);
   border: 1px solid rgba(0, 150, 57, 0.2);
+}
+
+.timeline-action-link {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #fff;
+  background-color: var(--sih-orange);
+  padding: 4px 12px;
+  border-radius: var(--border-radius-full);
+  text-decoration: none;
+  transition: all var(--transition);
+  display: inline-block;
+  box-shadow: 0 2px 4px rgba(242, 101, 34, 0.2);
+}
+
+.timeline-action-link:hover {
+  background-color: var(--sih-blue);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(35, 62, 79, 0.2);
 }
 
 .status-completed {

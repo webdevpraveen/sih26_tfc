@@ -48,13 +48,20 @@ export default function Timeline() {
                 <div className="timeline-date">{event.date}</div>
                 <h3 className="timeline-event-title">{event.title}</h3>
                 <p className="timeline-event-desc">{event.description}</p>
-                <span className={`timeline-status-badge status-${event.status || 'upcoming'}`}>
-                  <span style={{ 
-                    width: 6, height: 6, borderRadius: '50%', 
-                    background: 'currentColor', display: 'inline-block' 
-                  }}></span>
-                  {event.status || 'Upcoming'}
-                </span>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginTop: '12px', flexWrap: 'wrap' }}>
+                  <span className={`timeline-status-badge status-${event.status || 'upcoming'}`}>
+                    <span style={{ 
+                      width: 6, height: 6, borderRadius: '50%', 
+                      background: 'currentColor', display: 'inline-block' 
+                    }}></span>
+                    {event.status || 'Upcoming'}
+                  </span>
+                  {event.link && (
+                    <a href={event.link} target="_blank" rel="noopener noreferrer" className="timeline-action-link">
+                      Register Now →
+                    </a>
+                  )}
+                </div>
               </div>
             </div>
           ))}
