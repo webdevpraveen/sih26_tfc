@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200">
+  <rect width="200" height="200" rx="20" fill="#06b6d4"/>
+  <text x="100" y="85" text-anchor="middle" font-family="Arial Black" font-size="36" font-weight="900" fill="white">TFC</text>
+  <text x="100" y="120" text-anchor="middle" font-family="Arial" font-size="13" fill="rgba(255,255,255,0.85)">Tech Fusion</text>
+  <text x="100" y="140" text-anchor="middle" font-family="Arial" font-size="13" fill="rgba(255,255,255,0.85)">Club</text>
+</svg>
