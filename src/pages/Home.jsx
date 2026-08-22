@@ -235,20 +235,35 @@ export default function Home() {
             <div className="contact-card reveal reveal-delay-1">
               <div className="contact-card-icon">🏫</div>
               <div className="contact-card-label">SIH SPOC</div>
-              <div className="contact-card-value">Faculty Coordinator</div>
-              <div className="contact-card-sub">Contact via Tech Fusion Club</div>
+              <div className="contact-card-value">Er. Sunny Kumar</div>
+              <div className="contact-card-sub">Faculty Coordinator</div>
             </div>
+            
             <div className="contact-card reveal reveal-delay-2">
               <div className="contact-card-icon">👨‍💻</div>
-              <div className="contact-card-label">Student Coordinator</div>
-              <div className="contact-card-value">Tech Fusion Club Lead</div>
-              <div className="contact-card-sub">techfusionclub@srmu.ac.in</div>
+              <div className="contact-card-label">For More Details Contact</div>
+              <div className="contact-card-sub" style={{ marginBottom: '12px', color: 'var(--sih-orange)', fontWeight: '600' }}>
+                Joint Secretaries
+              </div>
+              <div className="contact-card-value" style={{ fontSize: '0.95rem', lineHeight: '1.6', textAlign: 'left', display: 'inline-block' }}>
+                <div style={{ marginBottom: '8px' }}><strong>Kushagra Dev Upadhyay</strong><br/>📞 6393745098</div>
+                <div style={{ marginBottom: '8px' }}><strong>Prateek Singh</strong><br/>📞 8924046121</div>
+                <div><strong>Jahnvi Pandey</strong><br/>📞 7523800560</div>
+              </div>
             </div>
+            
             <div className="contact-card reveal reveal-delay-3">
               <div className="contact-card-icon">📍</div>
-              <div className="contact-card-label">Venue</div>
-              <div className="contact-card-value">SRMU Campus</div>
-              <div className="contact-card-sub">Lucknow-Deva Road, Barabanki, UP</div>
+              <div className="contact-card-label">Contact & Venue</div>
+              <div className="contact-card-value" style={{ fontSize: '1rem', marginBottom: '8px' }}>
+                <a href="mailto:techfusionclub@srmu.ac.in" style={{ color: 'inherit', textDecoration: 'none' }}>
+                  techfusionclub@srmu.ac.in
+                </a>
+              </div>
+              <div className="contact-card-sub">
+                SRMU Campus<br/>
+                Lucknow-Deva Road, Barabanki, UP
+              </div>
             </div>
           </div>
         </div>

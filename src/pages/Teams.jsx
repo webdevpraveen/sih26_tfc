@@ -79,17 +79,7 @@ export default function Teams() {
           </p>
         </div>
 
-        {/* Stats */}
-        <div className="teams-stats">
-          <div className="teams-stat">
-            <div className="teams-stat-number">{teams.length}</div>
-            <div className="teams-stat-label">Teams</div>
-          </div>
-          <div className="teams-stat">
-            <div className="teams-stat-number">{totalMembers}</div>
-            <div className="teams-stat-label">Participants</div>
-          </div>
-        </div>
+
 
         {/* Search */}
         <div className="teams-search-bar">
