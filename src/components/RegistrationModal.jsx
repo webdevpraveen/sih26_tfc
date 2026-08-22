@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import './RegistrationModal.css';
 
-export default function RegistrationModal({ isOpen, onClose, onProceed }) {
+export default function RegistrationModal({ isOpen, onClose, registrationLink }) {
   const [hasAgreed, setHasAgreed] = useState(false);
 
   if (!isOpen) return null;
@@ -83,19 +83,28 @@ export default function RegistrationModal({ isOpen, onClose, onProceed }) {
           <div className="modal-footer-actions">
             <div className="modal-buttons">
               <button className="btn-secondary" onClick={onClose}>Cancel</button>
-              <button 
-                className="btn-primary" 
-                onClick={() => {
-                  if (hasAgreed) {
-                    onProceed();
-                    onClose();
-                    setHasAgreed(false);
-                  }
-                }}
-                disabled={!hasAgreed}
-              >
-                Proceed to Registration
-              </button>
+              {hasAgreed ? (
+                <a 
+                  href={registrationLink || "https://forms.gle/ZbCWyiSGveuNrS7m9/"}
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="btn-primary"
+                  onClick={() => {
+                    // Delay close slightly so the link can open first
+                    setTimeout(() => {
+                      onClose();
+                      setHasAgreed(false);
+                    }, 100);
+                  }}
+                  style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                >
+                  Proceed to Registration
+                </a>
+              ) : (
+                <button className="btn-primary" disabled={true}>
+                  Proceed to Registration
+                </button>
+              )}
             </div>
           </div>
         </div>

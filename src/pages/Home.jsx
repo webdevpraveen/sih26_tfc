@@ -257,7 +257,7 @@ export default function Home() {
       <RegistrationModal 
         isOpen={isRegistrationModalOpen} 
         onClose={() => setIsRegistrationModalOpen(false)} 
-        onProceed={() => window.open('https://forms.gle/ZbCWyiSGveuNrS7m9/', '_blank')} 
+        registrationLink="https://forms.gle/ZbCWyiSGveuNrS7m9/" 
       />
     </div>
   );
