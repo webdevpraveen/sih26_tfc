@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { sihThemes, defaultTimeline } from '../data/themes';
 import { useFirestore } from '../hooks/useFirestore';
 import RegistrationModal from '../components/RegistrationModal';
+import GalleryCarousel from '../components/GalleryCarousel';
 import './Home.css';
 
 export default function Home() {
@@ -221,6 +222,9 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* ══════ Gallery Section ══════ */}
+      <GalleryCarousel />
 
       {/* ══════ Contact Section ══════ */}
       <section className="contact-section section" id="contact">
