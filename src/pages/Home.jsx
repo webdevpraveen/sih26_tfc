@@ -234,9 +234,17 @@ export default function Home() {
           <div className="contact-grid">
             <div className="contact-card reveal reveal-delay-1">
               <div className="contact-card-icon">🏫</div>
-              <div className="contact-card-label">SIH SPOC</div>
-              <div className="contact-card-value">Er. Sunny Kumar</div>
-              <div className="contact-card-sub">Faculty Coordinator</div>
+              <div className="contact-card-label">Faculty Coordinators</div>
+              <div className="contact-card-value" style={{ fontSize: '0.95rem', lineHeight: '1.6', textAlign: 'left', display: 'inline-block' }}>
+                <div style={{ marginBottom: '12px' }}>
+                  <strong>Er. Abhishek Kumar Saxena</strong><br/>
+                  <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', fontWeight: 'normal' }}>Incharge Technical & Social Media Society</span>
+                </div>
+                <div>
+                  <strong>Er. Sunny Kumar</strong><br/>
+                  <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', fontWeight: 'normal' }}>SPoC SIH 2026</span>
+                </div>
+              </div>
             </div>
             
             <div className="contact-card reveal reveal-delay-2">
