@@ -10,8 +10,8 @@ import 'swiper/css/navigation';
 import './GalleryCarousel.css';
 
 export default function GalleryCarousel() {
-  // Assuming the user will upload 1.webp, 2.webp, etc. up to 10
-  const totalImages = 10;
+  // Assuming the user will upload 1.webp, 2.webp, etc. up to 12
+  const totalImages = 12;
   const slides = Array.from({ length: totalImages }, (_, i) => `/gallery/${i + 1}.webp`);
 
   return (
