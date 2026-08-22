@@ -7,7 +7,7 @@
  */
 
 // TODO: Replace this URL with your actual Google Apps Script Web App URL
-export const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz_MOCK_URL_CHANGE_ME/exec';
+export const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyEP83k6rXxnMMZKPhLK-umoWMIVvP7l0f4TiVj6ElZpN5Huh6BfnuabABQSPIXfbFowA/exec';
 
 export const fetchTeamsFromSheet = async () => {
   try {
