@@ -129,6 +129,12 @@ export default function Teams() {
                     </div>
                   )}
 
+                  {team["PS ID"] && (
+                    <div className="team-ps-id" style={{ marginTop: '12px', fontSize: '0.9rem', color: 'var(--text-secondary)' }}>
+                      <strong>Problem Statement:</strong> {team["PS ID"]}
+                    </div>
+                  )}
+
                   {members.length > 0 && (
                     <div className="team-members-section">
                       <div className="team-members-title">
