@@ -109,7 +109,7 @@ export const defaultTimeline = [
     title: 'Internal Team Registration',
     description: 'Teams register through the university portal',
     status: 'live',
-    link: '#',
+    link: 'https://forms.gle/ZbCWyiSGveuNrS7m9/',
   },
   {
     date: '1st & 2nd Sept 2026',

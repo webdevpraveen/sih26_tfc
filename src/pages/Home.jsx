@@ -257,7 +257,7 @@ export default function Home() {
       <RegistrationModal 
         isOpen={isRegistrationModalOpen} 
         onClose={() => setIsRegistrationModalOpen(false)} 
-        onProceed={() => window.open('#', '_blank')} 
+        onProceed={() => window.open('https://forms.gle/ZbCWyiSGveuNrS7m9/', '_blank')} 
       />
     </div>
   );
