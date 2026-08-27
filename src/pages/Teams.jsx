@@ -36,22 +36,24 @@ export default function Teams() {
     if (!search) return teams;
     const s = search.toLowerCase();
     return teams.filter((t) => {
-      const teamName = t["Team Name"] || "";
-      const member1 = t["Member 1 (Leader)"] || "";
-      const member2 = t["Member 2"] || "";
-      const member3 = t["Member 3"] || "";
-      const member4 = t["Member 4"] || "";
-      const member5 = t["Member 5"] || "";
-      const member6 = t["Member 6"] || "";
+      const teamName = String(t["Team Name"] || "").toLowerCase();
+      const member1 = String(t["Member 1 (Leader)"] || "").toLowerCase();
+      const member2 = String(t["Member 2"] || "").toLowerCase();
+      const member3 = String(t["Member 3"] || "").toLowerCase();
+      const member4 = String(t["Member 4"] || "").toLowerCase();
+      const member5 = String(t["Member 5"] || "").toLowerCase();
+      const member6 = String(t["Member 6"] || "").toLowerCase();
+      const psId = String(t["PS ID"] || "").toLowerCase();
       
       return (
-        teamName.toLowerCase().includes(s) ||
-        member1.toLowerCase().includes(s) ||
-        member2.toLowerCase().includes(s) ||
-        member3.toLowerCase().includes(s) ||
-        member4.toLowerCase().includes(s) ||
-        member5.toLowerCase().includes(s) ||
-        member6.toLowerCase().includes(s)
+        teamName.includes(s) ||
+        member1.includes(s) ||
+        member2.includes(s) ||
+        member3.includes(s) ||
+        member4.includes(s) ||
+        member5.includes(s) ||
+        member6.includes(s) ||
+        psId.includes(s)
       );
     });
   }, [teams, search]);
@@ -87,7 +89,7 @@ export default function Teams() {
           <input
             type="text"
             className="teams-search"
-            placeholder="Search teams, members, or problem statements..."
+            placeholder="Search teams or members..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
@@ -126,12 +128,6 @@ export default function Teams() {
                   {!isVerified && (
                     <div className="unverified-note">
                       <strong>Verification Pending:</strong> Your documents are currently under review by the documentation team.
-                    </div>
-                  )}
-
-                  {team["PS ID"] && (
-                    <div className="team-ps-id" style={{ marginTop: '12px', fontSize: '0.9rem', color: 'var(--text-secondary)' }}>
-                      <strong>Problem Statement:</strong> {team["PS ID"]}
                     </div>
                   )}
 
