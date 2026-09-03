@@ -4,6 +4,39 @@ import { defaultTimeline } from '../data/themes';
 import RegistrationModal from '../components/RegistrationModal';
 import './Timeline.css';
 
+const Countdown = ({ targetDate }) => {
+  const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0, expired: false });
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      const now = new Date().getTime();
+      const distance = new Date(targetDate).getTime() - now;
+
+      if (distance < 0) {
+        clearInterval(timer);
+        setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0, expired: true });
+      } else {
+        setTimeLeft({
+          days: Math.floor(distance / (1000 * 60 * 60 * 24)),
+          hours: Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
+          minutes: Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)),
+          seconds: Math.floor((distance % (1000 * 60)) / 1000),
+          expired: false
+        });
+      }
+    }, 1000);
+    return () => clearInterval(timer);
+  }, [targetDate]);
+
+  if (timeLeft.expired) return <div style={{ marginTop: '12px', fontSize: '0.85rem', color: 'red', fontWeight: 'bold' }}>Registration Closed</div>;
+
+  return (
+    <div style={{ marginTop: '12px', display: 'flex', gap: '8px', fontSize: '0.9rem', color: 'var(--sih-orange-dark)', fontWeight: 'bold', background: 'var(--sih-orange)', color: 'white', padding: '4px 10px', borderRadius: '15px', alignItems: 'center', width: 'fit-content' }}>
+      ⏳ Ends in: {timeLeft.days}d {timeLeft.hours}h {timeLeft.minutes}m {timeLeft.seconds}s
+    </div>
+  );
+};
+
 export default function Timeline() {
   const { data: firestoreTimeline, loading } = useFirestore('timeline');
   const [isRegistrationModalOpen, setIsRegistrationModalOpen] = useState(false);
@@ -50,22 +83,27 @@ export default function Timeline() {
                 <div className="timeline-date">{event.date}</div>
                 <h3 className="timeline-event-title">{event.title}</h3>
                 <p className="timeline-event-desc">{event.description}</p>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginTop: '12px', flexWrap: 'wrap' }}>
-                  <span className={`timeline-status-badge status-${event.status || 'upcoming'}`}>
-                    <span style={{ 
-                      width: 6, height: 6, borderRadius: '50%', 
-                      background: 'currentColor', display: 'inline-block' 
-                    }}></span>
-                    {event.status || 'Upcoming'}
-                  </span>
-                  {event.link && (
-                    <button 
-                      onClick={() => setIsRegistrationModalOpen(true)} 
-                      className="timeline-action-link"
-                      style={{ border: 'none', cursor: 'pointer', fontFamily: 'inherit' }}
-                    >
-                      Register Now →
-                    </button>
+                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginTop: '12px', flexWrap: 'wrap' }}>
+                    <span className={`timeline-status-badge status-${event.status || 'upcoming'}`}>
+                      <span style={{ 
+                        width: 6, height: 6, borderRadius: '50%', 
+                        background: 'currentColor', display: 'inline-block' 
+                      }}></span>
+                      {event.status || 'Upcoming'}
+                    </span>
+                    {event.link && (
+                      <button 
+                        onClick={() => setIsRegistrationModalOpen(true)} 
+                        className="timeline-action-link"
+                        style={{ border: 'none', cursor: 'pointer', fontFamily: 'inherit' }}
+                      >
+                        Register Now →
+                      </button>
+                    )}
+                  </div>
+                  {event.title === 'Internal Team Registration' && (
+                    <Countdown targetDate="2026-09-04T23:59:59" />
                   )}
                 </div>
               </div>

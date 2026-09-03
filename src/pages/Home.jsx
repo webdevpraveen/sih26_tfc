@@ -4,6 +4,7 @@ import { sihThemes, defaultTimeline } from '../data/themes';
 import { useFirestore } from '../hooks/useFirestore';
 import RegistrationModal from '../components/RegistrationModal';
 import GalleryCarousel from '../components/GalleryCarousel';
+import Countdown from '../components/Countdown';
 import './Home.css';
 
 export default function Home() {
@@ -62,12 +63,17 @@ export default function Home() {
             </p>
 
             <div className="hero-actions">
-              <button onClick={() => setIsRegistrationModalOpen(true)} className="hero-register-btn" style={{ border: 'none', cursor: 'pointer', fontFamily: 'inherit', fontSize: '1rem' }}>
-                Register
-              </button>
-              <a href="https://sih.gov.in/sih2026PS" target="_blank" rel="noopener noreferrer" className="hero-explore-btn">
-                Explore Problems
-              </a>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
+                <div style={{ display: 'flex', gap: '15px' }}>
+                  <button onClick={() => setIsRegistrationModalOpen(true)} className="hero-register-btn" style={{ border: 'none', cursor: 'pointer', fontFamily: 'inherit', fontSize: '1rem' }}>
+                    Register
+                  </button>
+                  <a href="https://sih.gov.in/sih2026PS" target="_blank" rel="noopener noreferrer" className="hero-explore-btn">
+                    Explore Problems
+                  </a>
+                </div>
+                <Countdown targetDate="2026-09-04T23:59:59" style={{ margin: '0' }} />
+              </div>
             </div>
 
             <div className="hero-club-tag">

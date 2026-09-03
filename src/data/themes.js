@@ -112,7 +112,7 @@ export const defaultTimeline = [
     link: 'https://forms.gle/ZbCWyiSGveuNrS7m9/',
   },
   {
-    date: '1st Week of Sept 2026',
+    date: '7th & 8th Sept 2026',
     title: 'Conducting Internal Hackathon for SIH 2026',
     description: 'TIME: 10:30 AM - 5:00 PM | VENUE: B1 - 007, 207',
     status: 'upcoming',
