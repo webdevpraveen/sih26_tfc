@@ -111,7 +111,7 @@ export default function Teams() {
                             key={j}
                             className={`team-member${j === 0 ? ' leader' : ''}`}
                           >
-                            {member} {j === 0 && '👑'}
+                            {member} {j === 0 && ''}
                           </span>
                         ))}
                       </div>
