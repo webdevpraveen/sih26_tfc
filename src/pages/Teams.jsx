@@ -53,8 +53,13 @@ export default function Teams() {
             Teams participating in SIH 2026 Internal Hackathon at SRMU
           </p>
           {!loading && teams.length > 0 && (
-            <div className="teams-count-badge" style={{ display: 'inline-block', marginTop: '1rem', padding: '0.5rem 1rem', background: 'var(--bg-secondary)', borderRadius: '20px', border: '1px solid var(--border-color)', fontWeight: 'bold' }}>
-              Total Registered Teams: <span style={{ color: 'var(--primary)' }}>{teams.length}</span>
+            <div style={{ marginTop: '2rem', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+              <div style={{ fontSize: '4.5rem', fontWeight: '900', color: 'var(--primary)', lineHeight: '1', textShadow: '0 0 30px #f2652266' }}>
+                {teams.length}
+              </div>
+              <div style={{ fontSize: '1.1rem', color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '3px', marginTop: '0.5rem', fontWeight: '600' }}>
+                Total Teams Registered
+              </div>
             </div>
           )}
         </div>
