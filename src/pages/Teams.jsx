@@ -1,11 +1,10 @@
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { fetchTeamsFromSheet } from '../services/sheetService';
 import './Teams.css';
 
 export default function Teams() {
   const [teams, setTeams] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [search, setSearch] = useState('');
 
   // Fetch teams from Google Sheet
   useEffect(() => {
@@ -32,33 +31,7 @@ export default function Teams() {
     return () => observer.disconnect();
   }, [teams]);
 
-  const filtered = useMemo(() => {
-    if (!search) return teams;
-    const s = search.toLowerCase();
-    return teams.filter((t) => {
-      const teamName = String(t["Team Name"] || "").toLowerCase();
-      const member1 = String(t["Member 1 (Leader)"] || "").toLowerCase();
-      const member2 = String(t["Member 2"] || "").toLowerCase();
-      const member3 = String(t["Member 3"] || "").toLowerCase();
-      const member4 = String(t["Member 4"] || "").toLowerCase();
-      const member5 = String(t["Member 5"] || "").toLowerCase();
-      const member6 = String(t["Member 6"] || "").toLowerCase();
-      const psId = String(t["PS ID"] || "").toLowerCase();
-      
-      return (
-        teamName.includes(s) ||
-        member1.includes(s) ||
-        member2.includes(s) ||
-        member3.includes(s) ||
-        member4.includes(s) ||
-        member5.includes(s) ||
-        member6.includes(s) ||
-        psId.includes(s)
-      );
-    });
-  }, [teams, search]);
 
-  const totalMembers = teams.length * 6; // Assuming exactly 6 members per team as per guidelines
 
   if (loading) {
     return (
@@ -79,26 +52,17 @@ export default function Teams() {
           <p className="section-subtitle" style={{ margin: '0 auto' }}>
             Teams participating in SIH 2026 Internal Hackathon at SRMU
           </p>
-        </div>
-
-
-
-        {/* Search */}
-        <div className="teams-search-bar">
-          <span className="teams-search-icon">🔍</span>
-          <input
-            type="text"
-            className="teams-search"
-            placeholder="Search teams or members..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
+          {!loading && teams.length > 0 && (
+            <div className="teams-count-badge" style={{ display: 'inline-block', marginTop: '1rem', padding: '0.5rem 1rem', background: 'var(--bg-secondary)', borderRadius: '20px', border: '1px solid var(--border-color)', fontWeight: 'bold' }}>
+              Total Registered Teams: <span style={{ color: 'var(--primary)' }}>{teams.length}</span>
+            </div>
+          )}
         </div>
 
         {/* Teams Grid */}
-        {filtered.length > 0 ? (
+        {teams.length > 0 ? (
           <div className="teams-grid">
-            {filtered.map((team, i) => {
+            {teams.map((team, i) => {
               const members = [
                 team["Member 1 (Leader)"],
                 team["Member 2"],
@@ -156,9 +120,7 @@ export default function Teams() {
           <div className="empty-state">
             <div className="empty-state-icon">👥</div>
             <div className="empty-state-text">
-              {teams.length === 0
-                ? 'No teams registered yet. Stay tuned!'
-                : 'No teams found matching your search.'}
+              No teams registered yet. Stay tuned!
             </div>
           </div>
         )}
