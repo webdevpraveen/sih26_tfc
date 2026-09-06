@@ -47,9 +47,47 @@
   box-shadow: 0 4px 16px rgba(35, 62, 79, 0.3);
 }
 
-/* ── Track Section ── */
-.slots-track-section {
+/* ── Venue Section ── */
+.slots-venue-section {
   margin-bottom: 48px;
+}
+
+.slots-venue-header {
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 3px solid var(--sih-blue);
+}
+
+.slots-venue-badge {
+  font-family: var(--font-heading);
+  font-size: 1.4rem;
+  font-weight: 900;
+  color: var(--sih-blue);
+  letter-spacing: 1px;
+}
+
+.slots-timeslot-section {
+  margin-bottom: 28px;
+  margin-left: 12px;
+  padding-left: 16px;
+  border-left: 3px solid var(--border-color);
+}
+
+.slots-timeslot-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+}
+
+.slots-track-badge-sm {
+  padding: 3px 10px;
+  border-radius: var(--border-radius-full);
+  font-weight: 700;
+  font-size: 0.7rem;
+  letter-spacing: 0.5px;
+  color: white;
 }
 
 .slots-track-header {

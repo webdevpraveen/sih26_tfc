@@ -20,32 +20,33 @@ export default function Slots() {
     return () => observer.disconnect();
   }, [slots, activeDay]);
 
-  // Group slots by track for the active day
-  const trackGroups = useMemo(() => {
+  // Group slots: Venue → Time → teams
+  const venueGroups = useMemo(() => {
     const daySlots = slots
       .filter((s) => s.day === activeDay)
       .sort((a, b) => (a.order || 0) - (b.order || 0));
 
-    const groups = {};
+    const venueMap = {};
     daySlots.forEach((slot) => {
-      const track = slot.track || 'Unassigned';
-      if (!groups[track]) {
-        groups[track] = {
-          track,
-          venue: slot.venue || '',
-          time: slot.time || '',
-          slots: [],
-        };
-      }
-      groups[track].slots.push(slot);
+      const venue = slot.venue || 'Unknown';
+      const time = slot.time || 'TBD';
+      if (!venueMap[venue]) venueMap[venue] = {};
+      if (!venueMap[venue][time]) venueMap[venue][time] = { time, track: slot.track, slots: [] };
+      venueMap[venue][time].slots.push(slot);
     });
 
-    // Sort tracks numerically
-    return Object.values(groups).sort((a, b) => {
-      const numA = parseInt(a.track.replace(/\D/g, '')) || 0;
-      const numB = parseInt(b.track.replace(/\D/g, '')) || 0;
-      return numA - numB;
-    });
+    // Sort venues and times
+    const venueOrder = ['B1-007', 'B1-207', 'B2-305'];
+    const timeOrder = ['12:00 PM TO 02:00 PM', '02:00 PM TO 04:00 PM'];
+
+    return venueOrder
+      .filter((v) => venueMap[v])
+      .map((venue) => ({
+        venue,
+        timeSlots: timeOrder
+          .filter((t) => venueMap[venue][t])
+          .map((t) => venueMap[venue][t]),
+      }));
   }, [slots, activeDay]);
 
   // Summary stats
@@ -121,49 +122,59 @@ export default function Slots() {
           </div>
         </div>
 
-        {/* Track Sections */}
-        {trackGroups.length > 0 ? (
-          trackGroups.map((group) => (
-            <div key={group.track} className="slots-track-section reveal">
-              <div className="slots-track-header">
-                <span className={`slots-track-badge ${trackColorClass(group.track)}`}>
-                  {group.track}
-                </span>
-                <div className="slots-track-info">
-                  <div className="slots-track-meta">
-                    <span className="slots-meta-chip">🏛️ {group.venue}</span>
-                    <span className="slots-meta-chip">🕐 {group.time}</span>
-                  </div>
-                </div>
+        {/* Venue Sections */}
+        {venueGroups.length > 0 ? (
+          venueGroups.map((venueGroup) => (
+            <div key={venueGroup.venue} className="slots-venue-section reveal">
+              <div className="slots-venue-header">
+                <span className="slots-venue-badge">🏛️ {venueGroup.venue}</span>
               </div>
 
-              <div className="slots-table-wrap">
-                <table className="slots-table">
-                  <thead>
-                    <tr>
-                      <th style={{ width: '50px' }}>#</th>
-                      <th>Team Name</th>
-                      <th>Team Leader</th>
-                      <th style={{ width: '120px' }}>Status</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {group.slots.map((slot, i) => (
-                      <tr key={slot.id}>
-                        <td className="slots-sno">{i + 1}</td>
-                        <td className="slots-team-name">{slot.teamName}</td>
-                        <td className="slots-leader-name">{slot.leaderName}</td>
-                        <td>
-                          <span className={`slot-status-badge slot-status-${slot.status || 'pending'}`}>
-                            <span className="status-dot"></span>
-                            {slot.status || 'pending'}
-                          </span>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
+              {venueGroup.timeSlots.map((timeSlot) => (
+                <div key={timeSlot.time} className="slots-timeslot-section">
+                  <div className="slots-timeslot-header">
+                    <span className="slots-meta-chip">🕐 {timeSlot.time}</span>
+                    <span className={`slots-track-badge ${trackColorClass(timeSlot.track)}`}>
+                      {timeSlot.track}
+                    </span>
+                    <span className="slots-meta-chip">{timeSlot.slots.length} Teams</span>
+                  </div>
+
+                  <div className="slots-table-wrap">
+                    <table className="slots-table">
+                      <thead>
+                        <tr>
+                          <th style={{ width: '50px' }}>#</th>
+                          <th>Team Name</th>
+                          <th>Team Leader</th>
+                          <th style={{ width: '100px' }}>Track</th>
+                          <th style={{ width: '120px' }}>Status</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {timeSlot.slots.map((slot, i) => (
+                          <tr key={slot.id}>
+                            <td className="slots-sno">{i + 1}</td>
+                            <td className="slots-team-name">{slot.teamName}</td>
+                            <td className="slots-leader-name">{slot.leaderName}</td>
+                            <td>
+                              <span className={`slots-track-badge-sm ${trackColorClass(slot.track)}`}>
+                                {slot.track}
+                              </span>
+                            </td>
+                            <td>
+                              <span className={`slot-status-badge slot-status-${slot.status || 'pending'}`}>
+                                <span className="status-dot"></span>
+                                {slot.status || 'pending'}
+                              </span>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              ))}
             </div>
           ))
         ) : (
