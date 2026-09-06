@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useFirestore } from '../hooks/useFirestore';
 import { defaultTimeline } from '../data/themes';
 import RegistrationModal from '../components/RegistrationModal';
@@ -100,6 +101,15 @@ export default function Timeline() {
                       >
                         Register Now →
                       </button>
+                    )}
+                    {event.title && event.title.includes('Internal Hackathon') && (
+                      <Link 
+                        to="/slots" 
+                        className="timeline-action-link"
+                        style={{ border: 'none', textDecoration: 'none', fontWeight: 'bold' }}
+                      >
+                        View Slots →
+                      </Link>
                     )}
                   </div>
                   {event.title === 'Internal Team Registration' && (

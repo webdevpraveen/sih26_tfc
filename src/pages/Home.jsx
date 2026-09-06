@@ -65,14 +65,13 @@ export default function Home() {
             <div className="hero-actions">
               <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
                 <div style={{ display: 'flex', gap: '15px' }}>
-                  <button onClick={() => setIsRegistrationModalOpen(true)} className="hero-register-btn" style={{ border: 'none', cursor: 'pointer', fontFamily: 'inherit', fontSize: '1rem' }}>
-                    Register
-                  </button>
+                  <Link to="/slots" className="hero-register-btn" style={{ textDecoration: 'none' }}>
+                    View Slots <span style={{ marginLeft: '8px', fontSize: '1.2rem', lineHeight: 1 }}>→</span>
+                  </Link>
                   <a href="https://sih.gov.in/sih2026PS" target="_blank" rel="noopener noreferrer" className="hero-explore-btn">
                     Explore Problems
                   </a>
                 </div>
-                <Countdown targetDate="2026-09-04T23:59:59" style={{ margin: '0' }} />
               </div>
             </div>
 
