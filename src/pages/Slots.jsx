@@ -5,6 +5,7 @@ import './Slots.css';
 export default function Slots() {
   const { data: slots, loading } = useFirestore('slots');
   const [activeDay, setActiveDay] = useState(1);
+  const [activeVenue, setActiveVenue] = useState('all');
 
   // Scroll reveal
   useEffect(() => {
@@ -18,36 +19,39 @@ export default function Slots() {
     );
     document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
     return () => observer.disconnect();
+  }, [slots, activeDay, activeVenue]);
+
+  // Get unique venues
+  const venues = useMemo(() => {
+    const v = [...new Set(slots.filter((s) => s.day === activeDay).map((s) => s.venue))];
+    return ['B1-007', 'B1-207', 'B2-305'].filter((x) => v.includes(x));
   }, [slots, activeDay]);
 
-  // Group slots: Venue → Time → teams
-  const venueGroups = useMemo(() => {
-    const daySlots = slots
-      .filter((s) => s.day === activeDay)
-      .sort((a, b) => (a.order || 0) - (b.order || 0));
+  // Filter and group: venue → time → sorted teams
+  const sections = useMemo(() => {
+    let daySlots = slots.filter((s) => s.day === activeDay);
+    if (activeVenue !== 'all') daySlots = daySlots.filter((s) => s.venue === activeVenue);
 
-    const venueMap = {};
+    const timeOrder = ['12:00 PM TO 02:00 PM', '02:00 PM TO 04:00 PM'];
+    const grouped = {};
+
     daySlots.forEach((slot) => {
-      const venue = slot.venue || 'Unknown';
-      const time = slot.time || 'TBD';
-      if (!venueMap[venue]) venueMap[venue] = {};
-      if (!venueMap[venue][time]) venueMap[venue][time] = { time, track: slot.track, slots: [] };
-      venueMap[venue][time].slots.push(slot);
+      const key = `${slot.venue}___${slot.time}`;
+      if (!grouped[key]) grouped[key] = { venue: slot.venue, time: slot.time, track: slot.track, slots: [] };
+      grouped[key].slots.push(slot);
     });
 
-    // Sort venues and times
-    const venueOrder = ['B1-007', 'B1-207', 'B2-305'];
-    const timeOrder = ['12:00 PM TO 02:00 PM', '02:00 PM TO 04:00 PM'];
+    // Sort each group by order
+    Object.values(grouped).forEach((g) => g.slots.sort((a, b) => (a.order || 0) - (b.order || 0)));
 
-    return venueOrder
-      .filter((v) => venueMap[v])
-      .map((venue) => ({
-        venue,
-        timeSlots: timeOrder
-          .filter((t) => venueMap[venue][t])
-          .map((t) => venueMap[venue][t]),
-      }));
-  }, [slots, activeDay]);
+    // Sort groups: by venue then by time
+    return Object.values(grouped).sort((a, b) => {
+      const venueOrder = ['B1-007', 'B1-207', 'B2-305'];
+      const vi = venueOrder.indexOf(a.venue) - venueOrder.indexOf(b.venue);
+      if (vi !== 0) return vi;
+      return timeOrder.indexOf(a.time) - timeOrder.indexOf(b.time);
+    });
+  }, [slots, activeDay, activeVenue]);
 
   // Summary stats
   const summary = useMemo(() => {
@@ -60,9 +64,15 @@ export default function Slots() {
     };
   }, [slots, activeDay]);
 
-  const trackColorClass = (track) => {
-    const num = parseInt(String(track).replace(/\D/g, '')) || 1;
-    return `track-${Math.min(num, 6)}`;
+  const trackColor = (track) => {
+    const colors = { 'Track 1': '#ec4899', 'Track 2': '#8b5cf6', 'Track 3': '#06b6d4', 'Track 4': '#10b981', 'Track 5': '#f59e0b', 'Track 6': '#ef4444' };
+    return colors[track] || '#64748b';
+  };
+
+  const statusIcon = (status) => {
+    if (status === 'done') return '✅';
+    if (status === 'absent') return '❌';
+    return '⏳';
   };
 
   if (loading) {
@@ -88,16 +98,10 @@ export default function Slots() {
 
         {/* Day Tabs */}
         <div className="slots-day-tabs">
-          <button
-            className={`slots-day-tab${activeDay === 1 ? ' active' : ''}`}
-            onClick={() => setActiveDay(1)}
-          >
+          <button className={`slots-day-tab${activeDay === 1 ? ' active' : ''}`} onClick={() => setActiveDay(1)}>
             📅 Day 1 — 7th Sept
           </button>
-          <button
-            className={`slots-day-tab${activeDay === 2 ? ' active' : ''}`}
-            onClick={() => setActiveDay(2)}
-          >
+          <button className={`slots-day-tab${activeDay === 2 ? ' active' : ''}`} onClick={() => setActiveDay(2)}>
             📅 Day 2 — 8th Sept
           </button>
         </div>
@@ -122,65 +126,69 @@ export default function Slots() {
           </div>
         </div>
 
-        {/* Venue Sections */}
-        {venueGroups.length > 0 ? (
-          venueGroups.map((venueGroup) => (
-            <div key={venueGroup.venue} className="slots-venue-section reveal">
-              <div className="slots-venue-header">
-                <span className="slots-venue-badge">🏛️ {venueGroup.venue}</span>
+        {/* Venue Filter */}
+        <div className="slots-venue-filter">
+          <button className={`slots-venue-btn${activeVenue === 'all' ? ' active' : ''}`} onClick={() => setActiveVenue('all')}>
+            All Venues
+          </button>
+          {venues.map((v) => (
+            <button key={v} className={`slots-venue-btn${activeVenue === v ? ' active' : ''}`} onClick={() => setActiveVenue(v)}>
+              🏛️ {v}
+            </button>
+          ))}
+        </div>
+
+        {/* Sections */}
+        {sections.length > 0 ? (
+          sections.map((section, idx) => (
+            <div key={idx} className="slots-section reveal">
+              {/* Section Header */}
+              <div className="slots-section-bar" style={{ borderLeftColor: trackColor(section.track) }}>
+                <div className="slots-section-info">
+                  <span className="slots-section-venue">🏛️ {section.venue}</span>
+                  <span className="slots-section-divider">•</span>
+                  <span className="slots-section-time">🕐 {section.time}</span>
+                  <span className="slots-section-divider">•</span>
+                  <span className="slots-section-track" style={{ background: trackColor(section.track) }}>
+                    {section.track}
+                  </span>
+                  <span className="slots-section-count">{section.slots.length} teams</span>
+                </div>
               </div>
 
-              {venueGroup.timeSlots.map((timeSlot) => (
-                <div key={timeSlot.time} className="slots-timeslot-section">
-                  <div className="slots-timeslot-header">
-                    <span className="slots-meta-chip">🕐 {timeSlot.time}</span>
-                    <span className={`slots-track-badge ${trackColorClass(timeSlot.track)}`}>
-                      {timeSlot.track}
-                    </span>
-                    <span className="slots-meta-chip">{timeSlot.slots.length} Teams</span>
+              {/* Team List */}
+              <div className="slots-list">
+                {section.slots.map((slot, i) => (
+                  <div
+                    key={slot.id}
+                    className={`slots-list-item status-${slot.status || 'pending'}`}
+                  >
+                    <div className="slots-list-left">
+                      <div className="slots-list-number">
+                        {String(i + 1).padStart(2, '0')}
+                      </div>
+                      <div className="slots-list-info">
+                        <div className="slots-list-team">{slot.teamName}</div>
+                        <div className="slots-list-leader">
+                          <span style={{ opacity: 0.6 }}>Leader:</span> {slot.leaderName}
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div className="slots-list-right">
+                      <div className={`slots-status-badge badge-${slot.status || 'pending'}`}>
+                        {statusIcon(slot.status)} <span className="status-text">{slot.status || 'pending'}</span>
+                      </div>
+                    </div>
                   </div>
-
-                  <div className="slots-table-wrap">
-                    <table className="slots-table">
-                      <thead>
-                        <tr>
-                          <th style={{ width: '50px' }}>#</th>
-                          <th>Team Name</th>
-                          <th>Team Leader</th>
-                          <th style={{ width: '100px' }}>Track</th>
-                          <th style={{ width: '120px' }}>Status</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {timeSlot.slots.map((slot, i) => (
-                          <tr key={slot.id}>
-                            <td className="slots-sno">{i + 1}</td>
-                            <td className="slots-team-name">{slot.teamName}</td>
-                            <td className="slots-leader-name">{slot.leaderName}</td>
-                            <td>
-                              <span className={`slots-track-badge-sm ${trackColorClass(slot.track)}`}>
-                                {slot.track}
-                              </span>
-                            </td>
-                            <td>
-                              <span className={`slot-status-badge slot-status-${slot.status || 'pending'}`}>
-                                <span className="status-dot"></span>
-                                {slot.status || 'pending'}
-                              </span>
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           ))
         ) : (
-          <div className="empty-state" style={{ textAlign: 'center', padding: '60px 20px' }}>
-            <div className="empty-state-icon" style={{ fontSize: '3rem' }}>📋</div>
-            <div className="empty-state-text" style={{ marginTop: '12px', color: 'var(--text-muted)' }}>
+          <div style={{ textAlign: 'center', padding: '60px 20px' }}>
+            <div style={{ fontSize: '3rem' }}>📋</div>
+            <div style={{ marginTop: '12px', color: 'var(--text-muted)' }}>
               No slots scheduled for this day yet.
             </div>
           </div>
