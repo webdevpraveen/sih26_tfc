@@ -175,7 +175,7 @@ export default function ManageSlots() {
             <div className="admin-form-group">
               <label className="admin-form-label">Track</label>
               <select className="admin-form-input" value={form.track} onChange={(e) => setForm({ ...form, track: e.target.value })}>
-                {[1, 2, 3, 4, 5, 6].map((n) => <option key={n} value={`Track ${n}`}>Track {n}</option>)}
+                {[...Array(13)].map((_, i) => <option key={i+1} value={`Track ${i+1}`}>Track {i+1}</option>)}
               </select>
             </div>
             <div className="admin-form-group">
@@ -189,8 +189,11 @@ export default function ManageSlots() {
             <div className="admin-form-group">
               <label className="admin-form-label">Timing</label>
               <select className="admin-form-input" value={form.time} onChange={(e) => setForm({ ...form, time: e.target.value })}>
+                <option value="10:30 AM TO 12:30 PM">10:30 AM – 12:30 PM</option>
                 <option value="12:00 PM TO 02:00 PM">12:00 PM – 02:00 PM</option>
+                <option value="12:30 PM TO 02:30 PM">12:30 PM – 02:30 PM</option>
                 <option value="02:00 PM TO 04:00 PM">02:00 PM – 04:00 PM</option>
+                <option value="02:30 PM TO 04:30 PM">02:30 PM – 04:30 PM</option>
               </select>
             </div>
             <div className="admin-form-group">

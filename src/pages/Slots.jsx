@@ -32,7 +32,7 @@ export default function Slots() {
     let daySlots = slots.filter((s) => s.day === activeDay);
     if (activeVenue !== 'all') daySlots = daySlots.filter((s) => s.venue === activeVenue);
 
-    const timeOrder = ['12:00 PM TO 02:00 PM', '02:00 PM TO 04:00 PM'];
+    const timeOrder = ['10:30 AM TO 12:30 PM', '12:00 PM TO 02:00 PM', '12:30 PM TO 02:30 PM', '02:00 PM TO 04:00 PM', '02:30 PM TO 04:30 PM'];
     const grouped = {};
 
     daySlots.forEach((slot) => {
@@ -65,7 +65,13 @@ export default function Slots() {
   }, [slots, activeDay]);
 
   const trackColor = (track) => {
-    const colors = { 'Track 1': '#ec4899', 'Track 2': '#8b5cf6', 'Track 3': '#06b6d4', 'Track 4': '#10b981', 'Track 5': '#f59e0b', 'Track 6': '#ef4444' };
+    const colors = { 
+      'Track 1': '#ec4899', 'Track 2': '#8b5cf6', 'Track 3': '#06b6d4', 
+      'Track 4': '#10b981', 'Track 5': '#f59e0b', 'Track 6': '#ef4444',
+      'Track 7': '#3b82f6', 'Track 8': '#8b5cf6', 'Track 9': '#14b8a6',
+      'Track 10': '#f43f5e', 'Track 11': '#6366f1', 'Track 12': '#d946ef',
+      'Track 13': '#84cc16'
+    };
     return colors[track] || '#64748b';
   };
 
