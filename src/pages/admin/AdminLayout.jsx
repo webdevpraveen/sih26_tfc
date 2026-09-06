@@ -18,6 +18,7 @@ export default function AdminLayout() {
     { to: '/admin/notices', icon: '📢', label: 'Manage Notices' },
     { to: '/admin/teams', icon: '👥', label: 'Manage Teams' },
     { to: '/admin/timeline', icon: '📅', label: 'Manage Timeline' },
+    { to: '/admin/slots', icon: '🎯', label: 'Manage Slots' },
   ];
 
   return (

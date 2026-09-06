@@ -23,6 +23,7 @@ export default function Navbar() {
     { to: 'https://sih.gov.in/sih2026PS', label: 'Problem Statements', external: true },
     { to: '/timeline', label: 'Timeline' },
     { to: '/teams', label: 'Teams' },
+    { to: '/slots', label: 'Slots' },
     { to: '/notices', label: 'Notices' },
   ];
 

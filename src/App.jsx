@@ -9,6 +9,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 import Home from './pages/Home';
 import Timeline from './pages/Timeline';
 import Teams from './pages/Teams';
+import Slots from './pages/Slots';
 import Notices from './pages/Notices';
 
 // Admin Pages
@@ -18,6 +19,8 @@ import AdminDashboard from './pages/admin/AdminDashboard';
 import ManageNotices from './pages/admin/ManageNotices';
 import ManageTeams from './pages/admin/ManageTeams';
 import ManageTimeline from './pages/admin/ManageTimeline';
+import ManageSlots from './pages/admin/ManageSlots';
+import SeedSlots from './pages/admin/SeedSlots';
 
 function PublicLayout({ children }) {
   return (
@@ -39,6 +42,7 @@ export default function App() {
           <Route path="/" element={<PublicLayout><Home /></PublicLayout>} />
           <Route path="/timeline" element={<PublicLayout><Timeline /></PublicLayout>} />
           <Route path="/teams" element={<PublicLayout><Teams /></PublicLayout>} />
+          <Route path="/slots" element={<PublicLayout><Slots /></PublicLayout>} />
           <Route path="/notices" element={<PublicLayout><Notices /></PublicLayout>} />
 
           {/* Admin Routes */}
@@ -55,6 +59,8 @@ export default function App() {
             <Route path="notices" element={<ManageNotices />} />
             <Route path="teams" element={<ManageTeams />} />
             <Route path="timeline" element={<ManageTimeline />} />
+            <Route path="slots" element={<ManageSlots />} />
+            <Route path="seed-slots" element={<SeedSlots />} />
           </Route>
 
           {/* 404 */}

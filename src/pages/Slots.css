@@ -1,0 +1,288 @@
+/* ═══════════════════════════════════════════
+   SLOTS PAGE
+   ═══════════════════════════════════════════ */
+
+.slots-page {
+  padding-top: 100px;
+  min-height: 100vh;
+  padding-bottom: 60px;
+}
+
+.slots-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+/* ── Day Tabs ── */
+.slots-day-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 32px;
+}
+
+.slots-day-tab {
+  padding: 12px 28px;
+  border: 2px solid var(--border-color);
+  border-radius: var(--border-radius-sm);
+  background: var(--bg-surface);
+  color: var(--text-secondary);
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all var(--transition);
+  font-family: var(--font-heading);
+  letter-spacing: 0.5px;
+}
+
+.slots-day-tab:hover {
+  border-color: var(--sih-blue-light);
+  color: var(--sih-blue);
+}
+
+.slots-day-tab.active {
+  background: var(--sih-blue);
+  border-color: var(--sih-blue);
+  color: white;
+  box-shadow: 0 4px 16px rgba(35, 62, 79, 0.3);
+}
+
+/* ── Track Section ── */
+.slots-track-section {
+  margin-bottom: 48px;
+}
+
+.slots-track-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid var(--border-color);
+}
+
+.slots-track-badge {
+  padding: 6px 16px;
+  border-radius: var(--border-radius-full);
+  font-weight: 800;
+  font-size: 0.85rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: white;
+}
+
+.slots-track-badge.track-1 { background: #ec4899; }
+.slots-track-badge.track-2 { background: #8b5cf6; }
+.slots-track-badge.track-3 { background: #06b6d4; }
+.slots-track-badge.track-4 { background: #10b981; }
+.slots-track-badge.track-5 { background: #f59e0b; }
+.slots-track-badge.track-6 { background: #ef4444; }
+
+.slots-track-info {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.slots-track-title {
+  font-family: var(--font-heading);
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.slots-track-meta {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.slots-meta-chip {
+  padding: 4px 10px;
+  background: var(--bg-surface-light);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-full);
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+
+/* ── Slot Table ── */
+.slots-table-wrap {
+  overflow-x: auto;
+  border-radius: var(--border-radius);
+  border: 1px solid var(--border-color);
+  background: var(--bg-surface);
+  box-shadow: var(--shadow-sm);
+}
+
+.slots-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.slots-table thead {
+  background: var(--bg-surface-light);
+}
+
+.slots-table th {
+  padding: 14px 18px;
+  text-align: left;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+  border-bottom: 2px solid var(--border-color);
+}
+
+.slots-table td {
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border-color);
+  font-size: 0.92rem;
+  color: var(--text-primary);
+}
+
+.slots-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.slots-table tbody tr {
+  transition: background var(--transition);
+}
+
+.slots-table tbody tr:hover {
+  background: rgba(35, 62, 79, 0.03);
+}
+
+.slots-sno {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+.slots-team-name {
+  font-weight: 700;
+  color: var(--sih-blue);
+}
+
+.slots-leader-name {
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+/* ── Status Badges ── */
+.slot-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 14px;
+  border-radius: var(--border-radius-full);
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.slot-status-badge .status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.slot-status-pending {
+  background: rgba(245, 158, 11, 0.1);
+  color: #d97706;
+  border: 1px solid rgba(245, 158, 11, 0.25);
+}
+
+.slot-status-done {
+  background: rgba(16, 185, 129, 0.1);
+  color: #059669;
+  border: 1px solid rgba(16, 185, 129, 0.25);
+}
+
+.slot-status-absent {
+  background: rgba(239, 68, 68, 0.1);
+  color: #dc2626;
+  border: 1px solid rgba(239, 68, 68, 0.25);
+}
+
+/* ── Summary Stats ── */
+.slots-summary {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  margin-bottom: 36px;
+  flex-wrap: wrap;
+}
+
+.slots-summary-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 20px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-sm);
+}
+
+.slots-summary-value {
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  font-weight: 900;
+}
+
+.slots-summary-label {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+}
+
+.slots-summary-value.total { color: var(--sih-blue); }
+.slots-summary-value.done { color: #059669; }
+.slots-summary-value.pending { color: #d97706; }
+.slots-summary-value.absent { color: #dc2626; }
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .slots-page {
+    padding-top: 80px;
+  }
+
+  .slots-day-tabs {
+    gap: 8px;
+  }
+
+  .slots-day-tab {
+    padding: 10px 18px;
+    font-size: 0.85rem;
+  }
+
+  .slots-track-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .slots-table th,
+  .slots-table td {
+    padding: 10px 12px;
+    font-size: 0.82rem;
+  }
+
+  .slots-summary {
+    gap: 12px;
+  }
+
+  .slots-summary-card {
+    flex: 1;
+    min-width: 120px;
+    padding: 10px 14px;
+  }
+}
