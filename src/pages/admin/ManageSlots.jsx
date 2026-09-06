@@ -2,7 +2,7 @@ import { useState, useMemo, useCallback } from 'react';
 import { useFirestore } from '../../hooks/useFirestore';
 
 const STATUS_CYCLE = ['pending', 'done', 'absent'];
-const STATUS_LABELS = { pending: '⏳ Pending', done: '✅ Done', absent: '❌ Absent' };
+const STATUS_LABELS = { pending: '⏳ Upcoming', done: '✅ Done', absent: '❌ Absent' };
 const STATUS_COLORS = {
   pending: { bg: '#fef3c7', color: '#d97706', border: '#fcd34d' },
   done: { bg: '#d1fae5', color: '#059669', border: '#6ee7b7' },
@@ -242,7 +242,7 @@ export default function ManageSlots() {
         {[
           { icon: '📋', value: stats.total, label: 'Total Slots' },
           { icon: '✅', value: stats.done, label: 'Done' },
-          { icon: '⏳', value: stats.pending, label: 'Pending' },
+          { icon: '⏳', value: stats.pending, label: 'Upcoming' },
           { icon: '❌', value: stats.absent, label: 'Absent' },
         ].map((stat, i) => (
           <div key={i} className="admin-stat-card">
