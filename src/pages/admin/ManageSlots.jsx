@@ -206,7 +206,7 @@ export default function ManageSlots() {
             <div className="admin-form-group">
               <label className="admin-form-label">Status</label>
               <select className="admin-form-input" value={form.status} onChange={(e) => setForm({ ...form, status: e.target.value })}>
-                <option value="pending">Pending</option>
+                <option value="pending">Upcoming</option>
                 <option value="done">Done</option>
                 <option value="absent">Absent</option>
               </select>
@@ -234,16 +234,6 @@ export default function ManageSlots() {
           style={activeDay === 2 ? {} : { background: 'var(--bg-surface-light)', color: 'var(--text-secondary)' }}
         >
           Day 2 — 8th Sept
-        </button>
-
-        <div style={{ flex: 1 }}></div>
-
-        {/* Bulk Actions */}
-        <button onClick={() => bulkUpdateStatus('done')} className="admin-add-btn" style={{ background: '#059669', fontSize: '0.8rem', padding: '6px 12px' }}>
-          ✅ Mark All Done
-        </button>
-        <button onClick={() => bulkUpdateStatus('pending')} className="admin-add-btn" style={{ background: '#d97706', fontSize: '0.8rem', padding: '6px 12px' }}>
-          ⏳ Reset All
         </button>
       </div>
 

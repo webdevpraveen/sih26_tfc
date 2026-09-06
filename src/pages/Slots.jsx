@@ -124,7 +124,7 @@ export default function Slots() {
           </div>
           <div className="slots-summary-card">
             <span className="slots-summary-value pending">{summary.pending}</span>
-            <span className="slots-summary-label">Pending ⏳</span>
+            <span className="slots-summary-label">Upcoming ⏳</span>
           </div>
           <div className="slots-summary-card">
             <span className="slots-summary-value absent">{summary.absent}</span>
@@ -183,7 +183,7 @@ export default function Slots() {
                     
                     <div className="slots-list-right">
                       <div className={`slots-status-badge badge-${slot.status || 'pending'}`}>
-                        {statusIcon(slot.status)} <span className="status-text">{slot.status || 'pending'}</span>
+                        {statusIcon(slot.status)} <span className="status-text">{(!slot.status || slot.status === 'pending') ? 'upcoming' : slot.status}</span>
                       </div>
                     </div>
                   </div>
