@@ -2,7 +2,7 @@ import { useState, useMemo, useCallback } from 'react';
 import { useFirestore } from '../../hooks/useFirestore';
 
 const STATUS_CYCLE = ['pending', 'done', 'absent'];
-const STATUS_LABELS = { pending: '⏳ Upcoming', done: '✅ Done', absent: '❌ Absent' };
+const STATUS_LABELS = { pending: 'Upcoming', done: '✅ Done', absent: '❌ Absent' };
 const STATUS_COLORS = {
   pending: { bg: '#fef3c7', color: '#d97706', border: '#fcd34d' },
   done: { bg: '#d1fae5', color: '#059669', border: '#6ee7b7' },
@@ -175,7 +175,7 @@ export default function ManageSlots() {
             <div className="admin-form-group">
               <label className="admin-form-label">Track</label>
               <select className="admin-form-input" value={form.track} onChange={(e) => setForm({ ...form, track: e.target.value })}>
-                {[...Array(13)].map((_, i) => <option key={i+1} value={`Track ${i+1}`}>Track {i+1}</option>)}
+                {[...Array(13)].map((_, i) => <option key={i + 1} value={`Track ${i + 1}`}>Track {i + 1}</option>)}
               </select>
             </div>
             <div className="admin-form-group">
