@@ -1,5 +1,6 @@
-import { useState, useMemo, useCallback } from 'react';
+import { useState, useMemo, useCallback, useEffect } from 'react';
 import { useFirestore } from '../../hooks/useFirestore';
+import './ManageSlots.css';
 
 const STATUS_CYCLE = ['pending', 'done', 'absent'];
 const STATUS_LABELS = { pending: 'Upcoming', done: '✅ Done', absent: '❌ Absent' };
@@ -9,24 +10,48 @@ const STATUS_COLORS = {
   absent: { bg: '#fee2e2', color: '#dc2626', border: '#fca5a5' },
 };
 
+const VENUES = ['B1-007', 'B1-207', 'B2-305'];
+
+function LiveClock() {
+  const [now, setNow] = useState(new Date());
+  useEffect(() => {
+    const t = setInterval(() => setNow(new Date()), 1000);
+    return () => clearInterval(t);
+  }, []);
+  const fmt = now.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true });
+  const dateFmt = now.toLocaleDateString('en-IN', { weekday: 'short', day: 'numeric', month: 'short' });
+  return (
+    <div className="ms-live-clock">
+      <span className="ms-live-dot"></span>
+      <span className="ms-live-label">LIVE</span>
+      <span className="ms-clock-time">{fmt}</span>
+      <span className="ms-clock-date">{dateFmt}</span>
+    </div>
+  );
+}
+
 export default function ManageSlots() {
   const { data: slots, addItem, updateItem, deleteItem } = useFirestore('slots');
   const [activeDay, setActiveDay] = useState(1);
+  const [activeVenue, setActiveVenue] = useState('all');
   const [showForm, setShowForm] = useState(false);
   const [editingId, setEditingId] = useState(null);
-  const [dragItem, setDragItem] = useState(null);
-  const [dragOverItem, setDragOverItem] = useState(null);
+  const [menuOpenId, setMenuOpenId] = useState(null);
 
   const [form, setForm] = useState({
     teamName: '', leaderName: '', track: 'Track 1', venue: 'B1-007',
     time: '12:00 PM TO 02:00 PM', day: 1, status: 'pending',
   });
 
-  // Group and sort slots by track for active day
+  // Group and sort slots by track for active day + venue
   const trackGroups = useMemo(() => {
-    const daySlots = slots
+    let daySlots = slots
       .filter((s) => s.day === activeDay)
       .sort((a, b) => (a.order || 0) - (b.order || 0));
+
+    if (activeVenue !== 'all') {
+      daySlots = daySlots.filter((s) => s.venue === activeVenue);
+    }
 
     const groups = {};
     daySlots.forEach((slot) => {
@@ -42,18 +67,21 @@ export default function ManageSlots() {
       const numB = parseInt(b.track.replace(/\D/g, '')) || 0;
       return numA - numB;
     });
-  }, [slots, activeDay]);
+  }, [slots, activeDay, activeVenue]);
 
-  // Stats for active day
+  // Stats for active day + venue
   const stats = useMemo(() => {
-    const daySlots = slots.filter((s) => s.day === activeDay);
+    let daySlots = slots.filter((s) => s.day === activeDay);
+    if (activeVenue !== 'all') {
+      daySlots = daySlots.filter((s) => s.venue === activeVenue);
+    }
     return {
       total: daySlots.length,
       done: daySlots.filter((s) => s.status === 'done').length,
       pending: daySlots.filter((s) => s.status === 'pending').length,
       absent: daySlots.filter((s) => s.status === 'absent').length,
     };
-  }, [slots, activeDay]);
+  }, [slots, activeDay, activeVenue]);
 
   // Toggle status
   const cycleStatus = useCallback(async (slot) => {
@@ -62,41 +90,23 @@ export default function ManageSlots() {
     await updateItem(slot.id, { status: nextStatus });
   }, [updateItem]);
 
-  // Drag and drop handlers
-  const handleDragStart = (slot) => setDragItem(slot);
-  const handleDragOver = (e, slot) => { e.preventDefault(); setDragOverItem(slot); };
-  const handleDragEnd = () => { setDragItem(null); setDragOverItem(null); };
-
-  const handleDrop = useCallback(async (e, targetSlot) => {
-    e.preventDefault();
-    if (!dragItem || dragItem.id === targetSlot.id || dragItem.track !== targetSlot.track) {
-      setDragItem(null);
-      setDragOverItem(null);
+  // Move slot up/down
+  const moveSlot = async (slot, direction) => {
+    const trackSlots = slots
+      .filter((s) => s.track === slot.track && s.day === activeDay)
+      .sort((a, b) => (a.order || 0) - (b.order || 0));
+    const idx = trackSlots.findIndex((s) => s.id === slot.id);
+    if (idx === -1) return;
+    const reordered = [...trackSlots];
+    if (direction === 'up' && idx > 0) {
+      [reordered[idx - 1], reordered[idx]] = [reordered[idx], reordered[idx - 1]];
+    } else if (direction === 'down' && idx < trackSlots.length - 1) {
+      [reordered[idx], reordered[idx + 1]] = [reordered[idx + 1], reordered[idx]];
+    } else {
       return;
     }
-
-    // Get all slots in this track, sorted by order
-    const trackSlots = slots
-      .filter((s) => s.track === dragItem.track && s.day === activeDay)
-      .sort((a, b) => (a.order || 0) - (b.order || 0));
-
-    const fromIdx = trackSlots.findIndex((s) => s.id === dragItem.id);
-    const toIdx = trackSlots.findIndex((s) => s.id === targetSlot.id);
-
-    if (fromIdx === -1 || toIdx === -1) return;
-
-    // Reorder
-    const reordered = [...trackSlots];
-    const [moved] = reordered.splice(fromIdx, 1);
-    reordered.splice(toIdx, 0, moved);
-
-    // Update order in Firestore
-    const updates = reordered.map((s, i) => updateItem(s.id, { order: i + 1 }));
-    await Promise.all(updates);
-
-    setDragItem(null);
-    setDragOverItem(null);
-  }, [dragItem, slots, activeDay, updateItem]);
+    await Promise.all(reordered.map((s, i) => updateItem(s.id, { order: i + 1 })));
+  };
 
   // Form handlers
   const resetForm = () => {
@@ -108,15 +118,12 @@ export default function ManageSlots() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!form.teamName.trim()) return;
-
     const slotData = {
       ...form,
       day: Number(form.day),
       order: editingId ? undefined : (slots.filter((s) => s.day === Number(form.day) && s.track === form.track).length + 1),
     };
-    // Remove undefined keys
     Object.keys(slotData).forEach((k) => slotData[k] === undefined && delete slotData[k]);
-
     if (editingId) {
       await updateItem(editingId, slotData);
     } else {
@@ -137,6 +144,7 @@ export default function ManageSlots() {
     });
     setEditingId(slot.id);
     setShowForm(true);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleDelete = async (id) => {
@@ -145,16 +153,14 @@ export default function ManageSlots() {
     }
   };
 
-  // Bulk actions
-  const bulkUpdateStatus = async (status) => {
-    const daySlots = slots.filter((s) => s.day === activeDay);
-    await Promise.all(daySlots.map((s) => updateItem(s.id, { status })));
-  };
-
   return (
-    <div className="page-enter">
-      <div className="admin-page-header">
-        <h1 className="admin-page-title">Manage Slots</h1>
+    <div className="page-enter ms-page">
+      {/* Header with live clock */}
+      <div className="ms-header">
+        <div className="ms-header-left">
+          <h1 className="admin-page-title">Manage Slots</h1>
+          <LiveClock />
+        </div>
         <button className="admin-add-btn" onClick={() => { setShowForm(!showForm); setEditingId(null); }}>
           {showForm ? '✕ Close' : '+ Add Slot'}
         </button>
@@ -162,7 +168,7 @@ export default function ManageSlots() {
 
       {/* Add/Edit Form */}
       {showForm && (
-        <form onSubmit={handleSubmit} className="admin-form" style={{ marginBottom: '24px' }}>
+        <form onSubmit={handleSubmit} className="admin-form ms-form" style={{ marginBottom: '24px' }}>
           <div className="admin-form-grid">
             <div className="admin-form-group">
               <label className="admin-form-label">Team Name *</label>
@@ -181,9 +187,7 @@ export default function ManageSlots() {
             <div className="admin-form-group">
               <label className="admin-form-label">Venue</label>
               <select className="admin-form-input" value={form.venue} onChange={(e) => setForm({ ...form, venue: e.target.value })}>
-                <option value="B1-007">B1-007</option>
-                <option value="B1-207">B1-207</option>
-                <option value="B2-305">B2-305</option>
+                {VENUES.map((v) => <option key={v} value={v}>{v}</option>)}
               </select>
             </div>
             <div className="admin-form-group">
@@ -212,119 +216,106 @@ export default function ManageSlots() {
               </select>
             </div>
           </div>
-          <div style={{ display: 'flex', gap: '12px', marginTop: '16px' }}>
+          <div style={{ display: 'flex', gap: '12px', marginTop: '16px', flexWrap: 'wrap' }}>
             <button type="submit" className="admin-add-btn">{editingId ? '💾 Update Slot' : '+ Add Slot'}</button>
             <button type="button" className="admin-add-btn" style={{ background: 'var(--bg-surface-light)', color: 'var(--text-secondary)' }} onClick={resetForm}>Cancel</button>
           </div>
         </form>
       )}
 
-      {/* Day Tabs */}
-      <div style={{ display: 'flex', gap: '10px', marginBottom: '20px', flexWrap: 'wrap', alignItems: 'center' }}>
-        <button
-          onClick={() => setActiveDay(1)}
-          className="admin-add-btn"
-          style={activeDay === 1 ? {} : { background: 'var(--bg-surface-light)', color: 'var(--text-secondary)' }}
-        >
-          Day 1 — 7th Sept
-        </button>
-        <button
-          onClick={() => setActiveDay(2)}
-          className="admin-add-btn"
-          style={activeDay === 2 ? {} : { background: 'var(--bg-surface-light)', color: 'var(--text-secondary)' }}
-        >
-          Day 2 — 8th Sept
-        </button>
+      {/* Day Tabs + Venue Filter */}
+      <div className="ms-filters">
+        <div className="ms-day-tabs">
+          <button onClick={() => setActiveDay(1)} className={`ms-tab-btn${activeDay === 1 ? ' active' : ''}`}>
+            📅 Day 1 — 7th Sept
+          </button>
+          <button onClick={() => setActiveDay(2)} className={`ms-tab-btn${activeDay === 2 ? ' active' : ''}`}>
+            📅 Day 2 — 8th Sept
+          </button>
+        </div>
+        <div className="ms-venue-tabs">
+          <button onClick={() => setActiveVenue('all')} className={`ms-venue-btn${activeVenue === 'all' ? ' active' : ''}`}>
+            All Venues
+          </button>
+          {VENUES.map((v) => (
+            <button key={v} onClick={() => setActiveVenue(v)} className={`ms-venue-btn${activeVenue === v ? ' active' : ''}`}>
+              🏛️ {v}
+            </button>
+          ))}
+        </div>
       </div>
 
       {/* Stats */}
-      <div className="admin-stats" style={{ marginBottom: '24px' }}>
+      <div className="ms-stats">
         {[
-          { icon: '📋', value: stats.total, label: 'Total Slots' },
-          { icon: '✅', value: stats.done, label: 'Done' },
-          { icon: '⏳', value: stats.pending, label: 'Upcoming' },
-          { icon: '❌', value: stats.absent, label: 'Absent' },
+          { icon: '📋', value: stats.total, label: 'Total', cls: '' },
+          { icon: '✅', value: stats.done, label: 'Done', cls: 'done' },
+          { icon: '⏳', value: stats.pending, label: 'Upcoming', cls: 'pending' },
+          { icon: '❌', value: stats.absent, label: 'Absent', cls: 'absent' },
         ].map((stat, i) => (
-          <div key={i} className="admin-stat-card">
-            <div className="admin-stat-icon">{stat.icon}</div>
-            <div className="admin-stat-value">{stat.value}</div>
-            <div className="admin-stat-label">{stat.label}</div>
+          <div key={i} className={`ms-stat-card ${stat.cls}`}>
+            <span className="ms-stat-icon">{stat.icon}</span>
+            <span className="ms-stat-value">{stat.value}</span>
+            <span className="ms-stat-label">{stat.label}</span>
           </div>
         ))}
       </div>
 
       {/* Track Sections */}
       {trackGroups.map((group) => (
-        <div key={group.track} style={{ marginBottom: '32px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '12px', borderBottom: '2px solid var(--border-color)', paddingBottom: '8px' }}>
-            <span style={{ padding: '4px 12px', borderRadius: '20px', background: 'var(--sih-blue)', color: 'white', fontWeight: 700, fontSize: '0.85rem' }}>
-              {group.track}
-            </span>
-            <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>
-              🏛️ {group.venue} • 🕐 {group.time}
-            </span>
+        <div key={group.track} className="ms-track-group">
+          <div className="ms-track-header">
+            <span className="ms-track-badge">{group.track}</span>
+            <span className="ms-track-meta">🏛️ {group.venue} • 🕐 {group.time}</span>
+            <span className="ms-track-count">{group.slots.length} teams</span>
           </div>
 
-          <div className="admin-table-wrap">
-            <table className="admin-table">
-              <thead>
-                <tr>
-                  <th style={{ width: '40px' }}>#</th>
-                  <th>Team Name</th>
-                  <th>Leader</th>
-                  <th style={{ width: '140px' }}>Status</th>
-                  <th style={{ width: '100px' }}>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {group.slots.map((slot, i) => (
-                  <tr
-                    key={slot.id}
-                    draggable
-                    onDragStart={() => handleDragStart(slot)}
-                    onDragOver={(e) => handleDragOver(e, slot)}
-                    onDrop={(e) => handleDrop(e, slot)}
-                    onDragEnd={handleDragEnd}
+          <div className="ms-card-list">
+            {group.slots.map((slot, i) => (
+              <div
+                key={slot.id}
+                className={`ms-slot-card status-${slot.status || 'pending'}`}
+              >
+                <div className="ms-slot-main">
+                  <span className="ms-slot-num">{i + 1}</span>
+                  <span className="ms-slot-name">{slot.teamName}</span>
+                </div>
+                <div className="ms-slot-actions">
+                  <button
+                    onClick={() => cycleStatus(slot)}
+                    className="ms-status-btn"
                     style={{
-                      cursor: 'grab',
-                      opacity: dragItem?.id === slot.id ? 0.4 : 1,
-                      background: dragOverItem?.id === slot.id ? 'rgba(14, 165, 233, 0.08)' : undefined,
-                      transition: 'all 0.15s ease',
+                      background: STATUS_COLORS[slot.status || 'pending'].bg,
+                      color: STATUS_COLORS[slot.status || 'pending'].color,
+                      border: `1px solid ${STATUS_COLORS[slot.status || 'pending'].border}`,
                     }}
                   >
-                    <td style={{ fontFamily: 'var(--font-mono)', color: 'var(--text-muted)', fontWeight: 700 }}>
-                      ⠿ {i + 1}
-                    </td>
-                    <td style={{ fontWeight: 600, color: 'var(--text-primary)' }}>{slot.teamName}</td>
-                    <td style={{ color: 'var(--text-secondary)' }}>{slot.leaderName}</td>
-                    <td>
-                      <button
-                        onClick={() => cycleStatus(slot)}
-                        style={{
-                          background: STATUS_COLORS[slot.status || 'pending'].bg,
-                          color: STATUS_COLORS[slot.status || 'pending'].color,
-                          border: `1px solid ${STATUS_COLORS[slot.status || 'pending'].border}`,
-                          padding: '5px 14px',
-                          borderRadius: '20px',
-                          fontWeight: 700,
-                          fontSize: '0.8rem',
-                          cursor: 'pointer',
-                          transition: 'all 0.2s ease',
-                        }}
-                      >
-                        {STATUS_LABELS[slot.status || 'pending']}
-                      </button>
-                    </td>
-                    <td>
-                      <div style={{ display: 'flex', gap: '6px' }}>
-                        <button onClick={() => handleEdit(slot)} style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '1rem' }} title="Edit">✏️</button>
-                        <button onClick={() => handleDelete(slot.id)} style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '1rem' }} title="Delete">🗑️</button>
+                    {STATUS_LABELS[slot.status || 'pending']}
+                  </button>
+                  <button onClick={() => moveSlot(slot, 'up')} className="ms-icon-btn" title="Move Up">🔼</button>
+                  <button onClick={() => moveSlot(slot, 'down')} className="ms-icon-btn" title="Move Down">🔽</button>
+
+                  {/* Desktop: direct buttons */}
+                  <div className="ms-desktop-actions">
+                    <button onClick={() => handleEdit(slot)} className="ms-icon-btn" title="Edit">✏️</button>
+                    <button onClick={() => handleDelete(slot.id)} className="ms-icon-btn" title="Delete">🗑️</button>
+                  </div>
+
+                  {/* Mobile: three-dot toggle */}
+                  <div className="ms-mobile-actions">
+                    {menuOpenId !== slot.id ? (
+                      <button onClick={() => setMenuOpenId(slot.id)} className="ms-icon-btn ms-dots-btn">⋮</button>
+                    ) : (
+                      <div className="ms-inline-menu">
+                        <button onClick={() => { handleEdit(slot); setMenuOpenId(null); }} className="ms-icon-btn">✏️</button>
+                        <button onClick={() => { handleDelete(slot.id); setMenuOpenId(null); }} className="ms-icon-btn">🗑️</button>
+                        <button onClick={() => setMenuOpenId(null)} className="ms-icon-btn ms-close-btn">✕</button>
                       </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+                    )}
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       ))}
@@ -332,7 +323,7 @@ export default function ManageSlots() {
       {trackGroups.length === 0 && (
         <div style={{ textAlign: 'center', padding: '60px 20px', color: 'var(--text-muted)' }}>
           <div style={{ fontSize: '3rem' }}>📋</div>
-          <p style={{ marginTop: '12px' }}>No slots for Day {activeDay}. Click "+ Add Slot" to start.</p>
+          <p style={{ marginTop: '12px' }}>No slots found. {activeVenue !== 'all' ? 'Try "All Venues" or ' : ''}Click "+ Add Slot" to start.</p>
         </div>
       )}
     </div>

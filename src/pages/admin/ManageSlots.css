@@ -1,0 +1,411 @@
+/* ═══════════════════════════════════════════
+   MANAGE SLOTS — Mobile-First Responsive
+   ═══════════════════════════════════════════ */
+
+.ms-page {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+/* ── Header ── */
+.ms-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.ms-header-left {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* ── Live Clock ── */
+.ms-live-clock {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #ecfdf5;
+  border: 1px solid #a7f3d0;
+  padding: 4px 14px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  width: fit-content;
+}
+
+.ms-live-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #10b981;
+  display: inline-block;
+  animation: msPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes msPulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.8); }
+}
+
+.ms-live-label {
+  color: #059669;
+  font-weight: 800;
+  letter-spacing: 1px;
+  font-size: 0.7rem;
+}
+
+.ms-clock-time {
+  color: var(--text-primary);
+  font-family: var(--font-mono, monospace);
+}
+
+.ms-clock-date {
+  color: var(--text-secondary);
+}
+
+/* ── Filters (Day + Venue) ── */
+.ms-filters {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.ms-day-tabs {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.ms-tab-btn {
+  padding: 8px 18px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  border: 2px solid var(--border-color);
+  background: var(--bg-surface-light);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.ms-tab-btn.active {
+  background: var(--sih-blue);
+  color: #fff;
+  border-color: var(--sih-blue);
+}
+
+.ms-venue-tabs {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.ms-venue-btn {
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  border: 1px solid var(--border-color);
+  background: #fff;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.ms-venue-btn.active {
+  background: var(--sih-orange);
+  color: #fff;
+  border-color: var(--sih-orange);
+}
+
+/* ── Stats ── */
+.ms-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.ms-stat-card {
+  background: #fff;
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: var(--shadow-sm);
+}
+
+.ms-stat-icon {
+  font-size: 1.2rem;
+}
+
+.ms-stat-value {
+  font-family: var(--font-heading);
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: var(--sih-blue);
+}
+
+.ms-stat-label {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* ── Track Group ── */
+.ms-track-group {
+  margin-bottom: 28px;
+}
+
+.ms-track-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--border-color);
+  flex-wrap: wrap;
+}
+
+.ms-track-badge {
+  padding: 4px 14px;
+  border-radius: 20px;
+  background: var(--sih-blue);
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.8rem;
+  white-space: nowrap;
+}
+
+.ms-track-meta {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.ms-track-count {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  background: var(--bg-surface-light);
+  padding: 2px 10px;
+  border-radius: 10px;
+  font-weight: 600;
+  margin-left: auto;
+  white-space: nowrap;
+}
+
+/* ── Slot Cards (Replaces Table) ── */
+.ms-card-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.ms-slot-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #fff;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 10px 14px;
+  transition: all 0.15s ease;
+  gap: 8px;
+}
+
+.ms-slot-card:hover {
+  box-shadow: var(--shadow-sm);
+  border-color: var(--border-color-hover);
+}
+
+.ms-slot-card.status-done {
+  border-left: 3px solid #10b981;
+}
+
+.ms-slot-card.status-absent {
+  border-left: 3px solid #ef4444;
+}
+
+.ms-slot-card.status-pending {
+  border-left: 3px solid #f59e0b;
+}
+
+.ms-slot-main {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  flex: 1;
+}
+
+.ms-slot-num {
+  font-family: var(--font-mono, monospace);
+  color: var(--text-muted);
+  font-weight: 700;
+  font-size: 0.85rem;
+  min-width: 22px;
+  text-align: center;
+}
+
+.ms-slot-name {
+  font-weight: 600;
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ms-slot-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+/* ── Status Button ── */
+.ms-status-btn {
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-weight: 700;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+/* ── Icon Buttons ── */
+.ms-icon-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  padding: 4px;
+  border-radius: 4px;
+  transition: background 0.15s;
+  line-height: 1;
+}
+
+.ms-icon-btn:hover {
+  background: var(--bg-surface-light);
+}
+
+.ms-dots-btn {
+  font-weight: bold;
+  font-size: 1.2rem;
+  padding: 2px 8px;
+}
+
+.ms-close-btn {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+.ms-inline-menu {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+/* ── Desktop vs Mobile Actions ── */
+.ms-desktop-actions {
+  display: flex;
+  gap: 2px;
+}
+
+.ms-mobile-actions {
+  display: none;
+}
+
+/* ── Form override ── */
+.ms-form .admin-form-grid {
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+}
+
+/* ═══════════════════════════════════════════
+   RESPONSIVE
+   ═══════════════════════════════════════════ */
+
+@media (max-width: 768px) {
+  .ms-stats {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+
+  .ms-stat-card {
+    padding: 10px;
+  }
+
+  .ms-stat-value {
+    font-size: 1.1rem;
+  }
+
+  .ms-desktop-actions {
+    display: none;
+  }
+
+  .ms-mobile-actions {
+    display: flex;
+  }
+
+  .ms-slot-name {
+    max-width: 120px;
+  }
+
+  .ms-track-count {
+    margin-left: 0;
+  }
+
+  .ms-form .admin-form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .ms-header {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 480px) {
+  .ms-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .ms-slot-card {
+    padding: 8px 10px;
+    flex-wrap: wrap;
+  }
+
+  .ms-slot-name {
+    max-width: 100px;
+    font-size: 0.82rem;
+  }
+
+  .ms-status-btn {
+    font-size: 0.7rem;
+    padding: 3px 8px;
+  }
+
+  .ms-tab-btn {
+    padding: 6px 12px;
+    font-size: 0.8rem;
+  }
+
+  .ms-venue-btn {
+    padding: 5px 10px;
+    font-size: 0.75rem;
+  }
+
+  .ms-live-clock {
+    font-size: 0.72rem;
+    padding: 3px 10px;
+  }
+}
