@@ -10,17 +10,10 @@
 /* ── Header ── */
 .ms-header {
   display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  margin-bottom: 24px;
-  flex-wrap: wrap;
+  align-items: center;
   gap: 12px;
-}
-
-.ms-header-left {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
 }
 
 /* ── Live Clock ── */
@@ -97,6 +90,29 @@
   background: var(--sih-blue);
   color: #fff;
   border-color: var(--sih-blue);
+}
+
+.ms-add-slot-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  border: 2px dashed var(--sih-orange);
+  background: rgba(242, 101, 34, 0.08);
+  color: var(--sih-orange);
+  font-size: 1.2rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.ms-add-slot-btn:hover {
+  background: var(--sih-orange);
+  color: #fff;
+  border-style: solid;
 }
 
 .ms-venue-tabs {

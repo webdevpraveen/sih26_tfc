@@ -157,13 +157,8 @@ export default function ManageSlots() {
     <div className="page-enter ms-page">
       {/* Header with live clock */}
       <div className="ms-header">
-        <div className="ms-header-left">
-          <h1 className="admin-page-title">Manage Slots</h1>
-          <LiveClock />
-        </div>
-        <button className="admin-add-btn" onClick={() => { setShowForm(!showForm); setEditingId(null); }}>
-          {showForm ? '✕ Close' : '+ Add Slot'}
-        </button>
+        <h1 className="admin-page-title">Manage Slots</h1>
+        <LiveClock />
       </div>
 
       {/* Add/Edit Form */}
@@ -231,6 +226,9 @@ export default function ManageSlots() {
           </button>
           <button onClick={() => setActiveDay(2)} className={`ms-tab-btn${activeDay === 2 ? ' active' : ''}`}>
             📅 Day 2 — 8th Sept
+          </button>
+          <button className="ms-add-slot-btn" onClick={() => { setShowForm(!showForm); setEditingId(null); }}>
+            {showForm ? '✕' : '+'}
           </button>
         </div>
         <div className="ms-venue-tabs">
