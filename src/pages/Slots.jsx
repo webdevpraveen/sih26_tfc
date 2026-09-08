@@ -97,9 +97,12 @@ export default function Slots() {
       <div className="container">
         <div className="slots-header">
           <h1 className="section-title">Evaluation Slots</h1>
-          <p className="section-subtitle" style={{ margin: '0 auto' }}>
+          <p className="section-subtitle" style={{ margin: '0 auto', marginBottom: '16px' }}>
             Internal Hackathon — 7th & 8th September 2026
           </p>
+          <div style={{ background: 'rgba(16, 185, 129, 0.1)', color: '#059669', padding: '12px 24px', borderRadius: '12px', border: '1px solid rgba(16, 185, 129, 0.2)', display: 'inline-block', fontWeight: 'bold' }}>
+            ✅ All evaluations have concluded. Final results are being compiled.
+          </div>
         </div>
 
         {/* Day Tabs */}

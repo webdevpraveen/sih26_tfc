@@ -18,9 +18,9 @@ export default function GalleryCarousel() {
     <section className="gallery-section section" id="gallery">
       <div className="container">
         <div className="section-header reveal">
-          <h2 className="section-title">Past Event Highlights</h2>
+          <h2 className="section-title">Hackathon Memories</h2>
           <p className="section-subtitle">
-            Glimpses from our previous hackathons and events
+            Relive the energy, innovation, and moments of the SIH 2026 Internal Hackathon
           </p>
         </div>
       </div>

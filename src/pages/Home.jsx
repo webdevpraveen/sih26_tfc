@@ -48,9 +48,8 @@ export default function Home() {
 
         <div className="container hero-container">
           <div className="hero-content">
-            <div className="hero-badge">
-              <span className="hero-badge-dot"></span>
-              Internal Hackathon 2026
+            <div className="hero-badge" style={{ background: 'rgba(16, 185, 129, 0.1)', color: '#10b981', border: '1px solid rgba(16, 185, 129, 0.2)' }}>
+              Evaluations Concluded ✅
             </div>
 
             <h1 className="hero-title">
@@ -65,9 +64,9 @@ export default function Home() {
             <div className="hero-actions">
               <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
                 <div style={{ display: 'flex', gap: '15px' }}>
-                  <Link to="/slots" className="hero-register-btn" style={{ textDecoration: 'none' }}>
-                    View Slots <span style={{ marginLeft: '8px', fontSize: '1.2rem', lineHeight: 1 }}>→</span>
-                  </Link>
+                  <div className="hero-register-btn" style={{ background: 'var(--bg-surface-light)', color: 'var(--text-secondary)', cursor: 'default', boxShadow: 'none' }}>
+                    Results Awaited ⏳
+                  </div>
                   <a href="https://sih.gov.in/sih2026PS" target="_blank" rel="noopener noreferrer" className="hero-explore-btn">
                     Explore Problems
                   </a>
@@ -114,6 +113,35 @@ export default function Home() {
           </div>
         </div>
       )}
+
+      {/* ══════ Post-Hackathon Journey (Results Teaser) ══════ */}
+      <section className="journey-section section" style={{ background: 'var(--bg-primary)', position: 'relative' }}>
+        <div className="container">
+          <div className="section-header reveal" style={{ textAlign: 'center' }}>
+            <h2 className="section-title">The Journey Continues...</h2>
+            <p className="section-subtitle" style={{ margin: '0 auto', maxWidth: '600px' }}>
+              The 36-hour internal hackathon has concluded, but the race to the National Finale has just begun!
+            </p>
+          </div>
+          <div className="journey-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '24px', marginTop: '40px' }}>
+            <div className="journey-card reveal reveal-delay-1" style={{ background: '#fff', padding: '30px', borderRadius: '16px', border: '1px solid var(--border-color)', boxShadow: 'var(--shadow-sm)', textAlign: 'center', transition: 'transform 0.3s' }}>
+              <div style={{ fontSize: '3rem', marginBottom: '16px' }}>🏆</div>
+              <h3 style={{ fontSize: '1.2rem', color: 'var(--sih-blue)', marginBottom: '10px' }}>Result Declaration</h3>
+              <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem' }}>Top teams will be officially selected based on innovation, feasibility, and technical execution.</p>
+            </div>
+            <div className="journey-card reveal reveal-delay-2" style={{ background: '#fff', padding: '30px', borderRadius: '16px', border: '1px solid var(--border-color)', boxShadow: 'var(--shadow-sm)', textAlign: 'center', transition: 'transform 0.3s' }}>
+              <div style={{ fontSize: '3rem', marginBottom: '16px' }}>💡</div>
+              <h3 style={{ fontSize: '1.2rem', color: 'var(--sih-blue)', marginBottom: '10px' }}>Mentorship & Refinement</h3>
+              <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem' }}>Selected teams will undergo expert mentorship to polish their prototypes for the national level.</p>
+            </div>
+            <div className="journey-card reveal reveal-delay-3" style={{ background: '#fff', padding: '30px', borderRadius: '16px', border: '1px solid var(--border-color)', boxShadow: 'var(--shadow-sm)', textAlign: 'center', transition: 'transform 0.3s' }}>
+              <div style={{ fontSize: '3rem', marginBottom: '16px' }}>🇮🇳</div>
+              <h3 style={{ fontSize: '1.2rem', color: 'var(--sih-blue)', marginBottom: '10px' }}>National Representation</h3>
+              <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem' }}>The final shortlisted teams will represent SRMU at the official Smart India Hackathon 2026 Finale!</p>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* ══════ About Section ══════ */}
       <section className="about-section section" id="about">

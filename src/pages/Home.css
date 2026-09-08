@@ -645,3 +645,32 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* ── Journey Section Post-Event ── */
+.journey-card {
+  background: rgba(255, 255, 255, 0.8) !important;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(242, 101, 34, 0.15) !important;
+  position: relative;
+  overflow: hidden;
+}
+
+.journey-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--sih-orange), var(--sih-blue));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.journey-card:hover {
+  transform: translateY(-8px) !important;
+  box-shadow: 0 12px 24px rgba(0,0,0,0.06) !important;
+  border-color: rgba(242, 101, 34, 0.3) !important;
+}
+
+.journey-card:hover::before {
+  opacity: 1;
+}

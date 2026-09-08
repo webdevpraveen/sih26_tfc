@@ -48,9 +48,9 @@ export default function Teams() {
     <div className="teams-page page-enter">
       <div className="container">
         <div className="teams-header">
-          <h1 className="section-title">Registered Teams</h1>
+          <h1 className="section-title">Our Innovators</h1>
           <p className="section-subtitle" style={{ margin: '0 auto' }}>
-            Teams participating in SIH 2026 Internal Hackathon at SRMU
+            The brilliant minds who participated in the SIH 2026 Internal Hackathon at SRMU
           </p>
           {!loading && teams.length > 0 && (
             <div style={{ marginTop: '2rem', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
