@@ -4,6 +4,7 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import ScrollToTop from './components/ScrollToTop';
 import ProtectedRoute from './components/ProtectedRoute';
+import { useAnalytics } from './hooks/useAnalytics';
 
 // Public Pages
 import Home from './pages/Home';
@@ -33,10 +34,16 @@ function PublicLayout({ children }) {
   );
 }
 
+function AnalyticsTracker() {
+  useAnalytics();
+  return null;
+}
+
 export default function App() {
   return (
     <AuthProvider>
       <BrowserRouter>
+        <AnalyticsTracker />
         <ScrollToTop />
         <Routes>
           {/* Public Routes */}
