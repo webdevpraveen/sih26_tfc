@@ -13,8 +13,8 @@ export default function Footer() {
                 <img src="/sih-logos/leftbanner.png" alt="SRMU SIH 2026" className="footer-left-banner" />
               </div>
               <p className="footer-brand-text">
-                Empowering students to solve the most pressing challenges 
-                of our time through innovation, collaboration, and technology. 
+                Empowering students to solve the most pressing challenges
+                of our time through innovation, collaboration, and technology.
                 Organized by Tech Fusion Club, SRMU.
               </p>
               <div className="footer-partner-logos">
@@ -27,7 +27,7 @@ export default function Footer() {
               <h3 className="footer-heading">Quick Links</h3>
               <div className="footer-link-list">
                 <Link to="/" className="footer-link">→ Home</Link>
-                <a href="https://sih.gov.in/sih2026PS" target="_blank" rel="noopener noreferrer" className="footer-link">→ Problem Statements</a>
+                <Link to="/results" className="footer-link">→ Results</Link>
                 <a href="https://docs.google.com/presentation/d/1zfTdID53p_wxCmviVm_itbp7XmPOmuu1/" target="_blank" rel="noopener noreferrer" className="footer-link">→ PPT Format Template</a>
                 <Link to="/timeline" className="footer-link">→ Timeline</Link>
                 <Link to="/teams" className="footer-link">→ Our Innovators (Teams)</Link>
@@ -70,7 +70,7 @@ export default function Footer() {
               © 2026 Smart India Hackathon '26 — <span className="footer-brand-highlight">Tech Fusion Club</span>. All rights reserved.
             </p>
             <p className="footer-developer">
-              Designed and Developed by <a href="https://praveenksingh.vercel.app" target="_blank" rel="noopener noreferrer"><strong>Praveen</strong></a>
+              Designed and Developed by <a href="https://praveenksingh.vercel.app" target="_blank" rel="noopener noreferrer"><strong>PraveenSingh</strong></a>
             </p>
           </div>
         </div>

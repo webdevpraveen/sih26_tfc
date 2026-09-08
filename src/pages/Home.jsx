@@ -55,9 +55,9 @@ export default function Home() {
             <h1 className="hero-title">
               Turn Ideas Into <span className="hero-title-highlight">Impact</span>
             </h1>
-            
+
             <p className="hero-description">
-              Join the brightest minds at SRMU to build, solve, and innovate. 
+              Join the brightest minds at SRMU to build, solve, and innovate.
               Tackle real-world problems through technology, collaboration, and creative thinking.
             </p>
 
@@ -67,8 +67,8 @@ export default function Home() {
                   <div className="hero-register-btn" style={{ background: 'var(--bg-surface-light)', color: 'var(--text-secondary)', cursor: 'default', boxShadow: 'none' }}>
                     Results Awaited ⏳
                   </div>
-                  <a href="https://sih.gov.in/sih2026PS" target="_blank" rel="noopener noreferrer" className="hero-explore-btn">
-                    Explore Problems
+                  <a href="/slots" target="_blank" rel="noopener noreferrer" className="hero-explore-btn">
+                    View Teams
                   </a>
                 </div>
               </div>
@@ -155,17 +155,17 @@ export default function Home() {
           <h2 className="about-title reveal">ABOUT SIH 2026</h2>
           <div className="about-text reveal reveal-delay-1">
             <p>
-              Smart India Hackathon (SIH) is a premier nationwide initiative designed to engage 
-              students in solving some of the most pressing challenges faced in everyday life. 
-              Launched to foster a culture of innovation and practical problem-solving, SIH provides 
-              a dynamic platform for students to develop and showcase their creative solutions to 
+              Smart India Hackathon (SIH) is a premier nationwide initiative designed to engage
+              students in solving some of the most pressing challenges faced in everyday life.
+              Launched to foster a culture of innovation and practical problem-solving, SIH provides
+              a dynamic platform for students to develop and showcase their creative solutions to
               real-world problems.
             </p>
             <p>
-              Since its inception, SIH has garnered significant success in promoting out-of-the-box 
-              thinking among young minds, particularly engineering students from across India. 
-              Each edition has built on the previous one, refining its approach and expanding its impact. 
-              The hackathon not only offers students an opportunity to showcase their skills but also 
+              Since its inception, SIH has garnered significant success in promoting out-of-the-box
+              thinking among young minds, particularly engineering students from across India.
+              Each edition has built on the previous one, refining its approach and expanding its impact.
+              The hackathon not only offers students an opportunity to showcase their skills but also
               encourages collaboration with industry experts, government agencies, and other stakeholders.
             </p>
           </div>
@@ -274,16 +274,16 @@ export default function Home() {
               <div className="contact-card-label">Faculty Coordinators</div>
               <div className="contact-card-value" style={{ fontSize: '0.95rem', lineHeight: '1.6', textAlign: 'left', display: 'inline-block' }}>
                 <div style={{ marginBottom: '12px' }}>
-                  <strong>Er. Abhishek Kumar Saxena</strong><br/>
+                  <strong>Er. Abhishek Kumar Saxena</strong><br />
                   <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', fontWeight: 'normal' }}>Incharge Technical & Social Media Society</span>
                 </div>
                 <div>
-                  <strong>Er. Sunny Kumar</strong><br/>
+                  <strong>Er. Sunny Kumar</strong><br />
                   <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', fontWeight: 'normal' }}>SPoC SIH 2026</span>
                 </div>
               </div>
             </div>
-            
+
             <div className="contact-card reveal reveal-delay-2">
               <div className="contact-card-icon">👨‍💻</div>
               <div className="contact-card-label">For More Details Contact</div>
@@ -291,12 +291,12 @@ export default function Home() {
                 Joint Secretaries
               </div>
               <div className="contact-card-value" style={{ fontSize: '0.95rem', lineHeight: '1.6', textAlign: 'left', display: 'inline-block' }}>
-                <div style={{ marginBottom: '8px' }}><strong>Kushagra Dev Upadhyay</strong><br/>📞 6393745098</div>
-                <div style={{ marginBottom: '8px' }}><strong>Prateek Singh</strong><br/>📞 8924046121</div>
-                <div><strong>Jahnvi Pandey</strong><br/>📞 7523800560</div>
+                <div style={{ marginBottom: '8px' }}><strong>Kushagra Dev Upadhyay</strong><br />📞 6393745098</div>
+                <div style={{ marginBottom: '8px' }}><strong>Prateek Singh</strong><br />📞 8924046121</div>
+                <div><strong>Jahnvi Pandey</strong><br />📞 7523800560</div>
               </div>
             </div>
-            
+
             <div className="contact-card reveal reveal-delay-3">
               <div className="contact-card-icon">📍</div>
               <div className="contact-card-label">Contact & Venue</div>
@@ -306,7 +306,7 @@ export default function Home() {
                 </a>
               </div>
               <div className="contact-card-sub">
-                SRMU Campus<br/>
+                SRMU Campus<br />
                 Lucknow-Deva Road, Barabanki, UP
               </div>
             </div>
@@ -314,10 +314,10 @@ export default function Home() {
         </div>
       </section>
 
-      <RegistrationModal 
-        isOpen={isRegistrationModalOpen} 
-        onClose={() => setIsRegistrationModalOpen(false)} 
-        registrationLink="https://forms.gle/ZbCWyiSGveuNrS7m9/" 
+      <RegistrationModal
+        isOpen={isRegistrationModalOpen}
+        onClose={() => setIsRegistrationModalOpen(false)}
+        registrationLink="https://forms.gle/ZbCWyiSGveuNrS7m9/"
       />
     </div>
   );

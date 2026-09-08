@@ -20,11 +20,11 @@ export default function Navbar() {
 
   const navItems = [
     { to: '/', label: 'Home' },
-    { to: 'https://sih.gov.in/sih2026PS', label: 'Problem Statements', external: true },
     { to: '/timeline', label: 'Timeline' },
     { to: '/teams', label: 'Teams' },
     { to: '/slots', label: 'Slots' },
     { to: '/notices', label: 'Notices' },
+    { to: '/results', label: 'Results' },
   ];
 
   return (

@@ -11,6 +11,7 @@ import Timeline from './pages/Timeline';
 import Teams from './pages/Teams';
 import Slots from './pages/Slots';
 import Notices from './pages/Notices';
+import Results from './pages/Results';
 
 // Admin Pages
 import AdminLogin from './pages/admin/AdminLogin';
@@ -44,6 +45,7 @@ export default function App() {
           <Route path="/teams" element={<PublicLayout><Teams /></PublicLayout>} />
           <Route path="/slots" element={<PublicLayout><Slots /></PublicLayout>} />
           <Route path="/notices" element={<PublicLayout><Notices /></PublicLayout>} />
+          <Route path="/results" element={<PublicLayout><Results /></PublicLayout>} />
 
           {/* Admin Routes */}
           <Route path="/admin/login" element={<AdminLogin />} />
