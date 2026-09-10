@@ -26,6 +26,9 @@ export default function Results() {
 
   const totalTeams = 50;
 
+  // Toggle this flag to true when results are announced
+  const SHOW_RESULTS_LIST = false;
+
   const renderSkeletonRow = (index) => {
     const rank = index + 1;
     const isTop = rank <= 45;
@@ -326,19 +329,21 @@ export default function Results() {
         {/* ═══════════════════════════════════════════
             PROVISIONAL STANDINGS (50 SKELETON TEAMS LIST)
             ═══════════════════════════════════════════ */}
-        <section className="results-list-section reveal">
-          <div className="list-section-header">
-            <div className="list-title-group">
-              <h3 className="list-section-title">
-                Qualifiers - SIH 2026 Internal Round
-              </h3>
+        {SHOW_RESULTS_LIST && (
+          <section className="results-list-section reveal">
+            <div className="list-section-header">
+              <div className="list-title-group">
+                <h3 className="list-section-title">
+                  Qualifiers - SIH 2026 Internal Round
+                </h3>
+              </div>
             </div>
-          </div>
 
-          <div className="results-list">
-            {Array.from({ length: totalTeams }).map((_, i) => renderSkeletonRow(i))}
-          </div>
-        </section>
+            <div className="results-list">
+              {Array.from({ length: totalTeams }).map((_, i) => renderSkeletonRow(i))}
+            </div>
+          </section>
+        )}
 
       </div>
     </div>
