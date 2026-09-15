@@ -1,10 +1,42 @@
 import { useEffect, useState, useMemo } from 'react';
+import confetti from 'canvas-confetti';
 import { selectedTeams } from '../data/resultsData';
 import './Results.css';
 
 export default function Results() {
   const [copied, setCopied] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
+
+  // Gentle minimal confetti on page load
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      const colors = ['#10b981', '#f59e0b', '#f26522', '#2563eb', '#34d399'];
+
+      confetti({
+        particleCount: 45,
+        spread: 65,
+        origin: { y: 0.65, x: 0.25 },
+        colors,
+        ticks: 200,
+        gravity: 0.75,
+        scalar: 0.85,
+        disableForReducedMotion: true,
+      });
+
+      confetti({
+        particleCount: 45,
+        spread: 65,
+        origin: { y: 0.65, x: 0.75 },
+        colors,
+        ticks: 200,
+        gravity: 0.75,
+        scalar: 0.85,
+        disableForReducedMotion: true,
+      });
+    }, 450);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   // Scroll reveal observer
   useEffect(() => {
