@@ -48,8 +48,8 @@ export default function Home() {
 
         <div className="container hero-container">
           <div className="hero-content">
-            <div className="hero-badge" style={{ background: 'rgba(16, 185, 129, 0.1)', color: '#10b981', border: '1px solid rgba(16, 185, 129, 0.2)' }}>
-              Evaluations Concluded ✅
+            <div className="hero-badge" style={{ background: 'rgba(16, 185, 129, 0.12)', color: '#059669', border: '1px solid rgba(16, 185, 129, 0.3)', fontWeight: '700' }}>
+              Results Declared 🎉
             </div>
 
             <h1 className="hero-title">
@@ -62,15 +62,13 @@ export default function Home() {
             </p>
 
             <div className="hero-actions">
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
-                <div style={{ display: 'flex', gap: '15px' }}>
-                  <div className="hero-register-btn" style={{ background: 'var(--bg-surface-light)', color: 'var(--text-secondary)', cursor: 'default', boxShadow: 'none' }}>
-                    Results Awaited ⏳
-                  </div>
-                  <a href="/slots" target="_blank" rel="noopener noreferrer" className="hero-explore-btn">
-                    View Teams
-                  </a>
-                </div>
+              <div style={{ display: 'flex', gap: '15px', flexWrap: 'wrap' }}>
+                <Link to="/results" className="hero-register-btn" style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>
+                  View Results 🏆
+                </Link>
+                <Link to="/teams" className="hero-explore-btn" style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>
+                  View Teams
+                </Link>
               </div>
             </div>
 
@@ -126,8 +124,8 @@ export default function Home() {
           <div className="journey-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '24px', marginTop: '40px' }}>
             <div className="journey-card reveal reveal-delay-1" style={{ background: '#fff', padding: '30px', borderRadius: '16px', border: '1px solid var(--border-color)', boxShadow: 'var(--shadow-sm)', textAlign: 'center', transition: 'transform 0.3s' }}>
               <div style={{ fontSize: '3rem', marginBottom: '16px' }}>🏆</div>
-              <h3 style={{ fontSize: '1.2rem', color: 'var(--sih-blue)', marginBottom: '10px' }}>Result Declaration</h3>
-              <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem' }}>Top teams will be officially selected based on innovation, feasibility, and technical execution.</p>
+              <h3 style={{ fontSize: '1.2rem', color: 'var(--sih-blue)', marginBottom: '10px' }}>Results Published</h3>
+              <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem' }}>100 selected teams have officially qualified from the internal round and are nominated for further stages.</p>
             </div>
             <div className="journey-card reveal reveal-delay-2" style={{ background: '#fff', padding: '30px', borderRadius: '16px', border: '1px solid var(--border-color)', boxShadow: 'var(--shadow-sm)', textAlign: 'center', transition: 'transform 0.3s' }}>
               <div style={{ fontSize: '3rem', marginBottom: '16px' }}>💡</div>

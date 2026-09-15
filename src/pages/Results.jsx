@@ -174,10 +174,6 @@ export default function Results() {
         <section className="results-list-section reveal">
           <div className="list-section-header">
             <div className="list-title-group">
-              <div className="list-title-badge-row">
-                <span className="selection-badge">OFFICIAL SELECTION ROSTER</span>
-                <span className="team-count-pill">{filteredTeams.length} of {selectedTeams.length} Teams</span>
-              </div>
               <h3 className="list-section-title">
                 List of Selected Teams in Internal Round SIH 2026
               </h3>
@@ -238,20 +234,13 @@ export default function Results() {
               </div>
 
               <div className="ledger-body">
-                {filteredTeams.map((team) => {
-                  const isTop3 = team.rank <= 3;
-                  const rankBadgeClass = team.rank === 1 ? 'rank-gold' : team.rank === 2 ? 'rank-silver' : team.rank === 3 ? 'rank-bronze' : '';
-
-                  return (
-                    <div
-                      key={team.rank}
-                      className={`team-ledger-row ${isTop3 ? 'top-tier' : ''}`}
-                    >
-                      <div className="col-sno">
-                        <span className={`sno-badge ${rankBadgeClass}`}>
-                          {team.rank < 10 ? `0${team.rank}` : team.rank}
-                        </span>
-                      </div>
+                {filteredTeams.map((team) => (
+                  <div key={team.rank} className="team-ledger-row">
+                    <div className="col-sno">
+                      <span className="sno-badge">
+                        {team.rank < 10 ? `0${team.rank}` : team.rank}
+                      </span>
+                    </div>
 
                       <div className="col-team">
                         <div className="team-name-text">
@@ -272,8 +261,7 @@ export default function Results() {
                         </span>
                       </div>
                     </div>
-                  );
-                })}
+                  ))}
               </div>
             </div>
           )}
