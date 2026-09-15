@@ -1,8 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
+import { selectedTeams } from '../data/resultsData';
 import './Results.css';
 
 export default function Results() {
   const [copied, setCopied] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
 
   // Scroll reveal observer
   useEffect(() => {
@@ -24,33 +26,18 @@ export default function Results() {
     setTimeout(() => setCopied(false), 2500);
   };
 
-  const totalTeams = 50;
-
-  // Toggle this flag to true when results are announced
-  const SHOW_RESULTS_LIST = false;
-
-  const renderSkeletonRow = (index) => {
-    const rank = index + 1;
-    const isTop = rank <= 45;
-    const rowClass = isTop ? 'skeleton-row top-team' : 'skeleton-row wait-team';
-
-    return (
-      <div
-        key={index}
-        className={`${rowClass} reveal`}
-        style={{ transitionDelay: `${Math.min(index * 0.015, 0.4)}s` }}
-      >
-        <div className="row-rank-box">
-          <span className="rank-number">{rank < 10 ? `0${rank}` : rank}</span>
-        </div>
-
-        <div className="row-content">
-          <div className="shimmer-block skeleton-title"></div>
-          <div className="shimmer-block skeleton-text"></div>
-        </div>
-      </div>
+  // Real-time filtered list
+  const filteredTeams = useMemo(() => {
+    const query = searchTerm.trim().toLowerCase();
+    if (!query) return selectedTeams;
+    return selectedTeams.filter(
+      (team) =>
+        team.teamName.toLowerCase().includes(query) ||
+        team.leaderName.toLowerCase().includes(query) ||
+        String(team.rank) === query ||
+        `#${team.rank}` === query
     );
-  };
+  }, [searchTerm]);
 
   return (
     <div className="results-page page-enter">
@@ -71,8 +58,8 @@ export default function Results() {
                 <span className="gov-text-full">MINISTRY OF EDUCATION &amp; AICTE INITIATIVE</span>
                 <span className="gov-text-mobile">MoE &amp; AICTE INITIATIVE</span>
               </span>
-              <span className="internal-round-pill">
-                OFFICIAL INTERNAL SCREENING ROUND
+              <span className="internal-round-pill official-published-pill">
+                OFFICIAL RESULTS PUBLISHED
               </span>
             </div>
             <div className="header-logo-card srmu-card">
@@ -95,227 +82,82 @@ export default function Results() {
         </header>
 
         {/* ═══════════════════════════════════════════
-            WAIT FOR RESULT ANNOUNCEMENT — SAND CLOCK SHOWCASE
+            OFFICIAL RESULTS DECLARED CELEBRATION CARD
             ═══════════════════════════════════════════ */}
         <section className="announcement-card-section reveal">
-          <div className="announcement-card">
+          <div className="announcement-card published-card">
 
             {/* Ambient Background Glow Effect */}
-            <div className="card-ambient-glow"></div>
+            <div className="card-ambient-glow published-glow"></div>
 
-            {/* Top Status Bar on Announcement Card */}
+            {/* Top Status Bar */}
             <div className="announcement-top-bar">
-              <div className="live-status-chip">
-                <span className="pulsing-live-dot"></span>
-                <span className="live-chip-text">
-                  <span className="chip-text-desktop">STATUS: EVALUATION CONCLUDED &bull; COMPILATION IN PROGRESS</span>
-                  <span className="chip-text-mobile">EVALUATION CONCLUDED &bull; COMPILING</span>
+              <div className="live-status-chip published-chip">
+                <span className="pulsing-live-dot published-dot"></span>
+                <span className="live-chip-text published-chip-text">
+                  <span className="chip-text-desktop">STATUS: OFFICIAL SELECTION LIST DECLARED &bull; 100 TEAMS QUALIFIED</span>
+                  <span className="chip-text-mobile">100 TEAMS OFFICIALLY SELECTED</span>
                 </span>
               </div>
               <button onClick={handleShare} className="share-btn" title="Copy Official Results Link">
-                {copied ? '✓ Link Copied' : '🔗 Share'}
+                {copied ? 'Link Copied' : 'Share Results'}
               </button>
             </div>
 
-            <div className="announcement-body">
-              {/* Left Column: Animated Sand Clock (Hourglass) */}
-              <div className="hourglass-showcase">
-                <div className="hourglass-pedestal">
-                  <div className="hourglass-wrapper">
-                    {/* SVG Hourglass */}
-                    <svg
-                      viewBox="0 0 120 160"
-                      className="hourglass-svg"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <defs>
-                        {/* Sand Gradient */}
-                        <linearGradient id="sandGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                          <stop offset="0%" stopColor="#fef08a" />
-                          <stop offset="35%" stopColor="#f59e0b" />
-                          <stop offset="100%" stopColor="#d97706" />
-                        </linearGradient>
-
-                        {/* Metallic Gold Trim Gradient */}
-                        <linearGradient id="goldTrim" x1="0%" y1="0%" x2="100%" y2="0%">
-                          <stop offset="0%" stopColor="#b45309" />
-                          <stop offset="50%" stopColor="#fbbf24" />
-                          <stop offset="100%" stopColor="#d97706" />
-                        </linearGradient>
-
-                        {/* Dark Frame Gradient */}
-                        <linearGradient id="darkFrame" x1="0%" y1="0%" x2="100%" y2="100%">
-                          <stop offset="0%" stopColor="#334155" />
-                          <stop offset="50%" stopColor="#1e293b" />
-                          <stop offset="100%" stopColor="#0f172a" />
-                        </linearGradient>
-
-                        {/* Glass Reflection Gradient */}
-                        <linearGradient id="glassReflection" x1="0%" y1="0%" x2="100%" y2="0%">
-                          <stop offset="0%" stopColor="rgba(255,255,255,0.75)" />
-                          <stop offset="30%" stopColor="rgba(255,255,255,0.25)" />
-                          <stop offset="100%" stopColor="rgba(255,255,255,0)" />
-                        </linearGradient>
-
-                        {/* Top Bulb Mask */}
-                        <clipPath id="topBulbClip">
-                          <path d="M 32 25 C 32 52, 54 68, 58 78 L 62 78 C 66 68, 88 52, 88 25 Z" />
-                        </clipPath>
-
-                        {/* Bottom Bulb Mask */}
-                        <clipPath id="bottomBulbClip">
-                          <path d="M 58 82 C 54 92, 32 108, 32 135 L 88 135 C 88 108, 66 92, 62 82 Z" />
-                        </clipPath>
-                      </defs>
-
-                      {/* Ambient Halo behind hourglass */}
-                      <ellipse cx="60" cy="80" rx="46" ry="56" fill="rgba(245, 158, 11, 0.18)" className="hourglass-inner-glow" />
-
-                      {/* Top Wood/Gold Plate */}
-                      <rect x="22" y="14" width="76" height="8" rx="4" fill="url(#goldTrim)" />
-                      <rect x="28" y="20" width="64" height="4" rx="2" fill="url(#darkFrame)" />
-
-                      {/* Side Support Pillars */}
-                      <rect x="25" y="22" width="4.5" height="116" rx="2" fill="url(#darkFrame)" stroke="#475569" strokeWidth="0.5" />
-                      <rect x="90.5" y="22" width="4.5" height="116" rx="2" fill="url(#darkFrame)" stroke="#475569" strokeWidth="0.5" />
-
-                      {/* Center Pillar Knobs */}
-                      <rect x="23.5" y="76" width="7.5" height="7" rx="2" fill="url(#goldTrim)" />
-                      <rect x="89" y="76" width="7.5" height="7" rx="2" fill="url(#goldTrim)" />
-
-                      {/* Glass Body Contour with Strong Contrast */}
-                      <path
-                        d="M 32 24 C 32 52, 56 70, 58 80 C 56 90, 32 108, 32 136 L 88 136 C 88 108, 64 90, 62 80 C 64 70, 88 52, 88 24 Z"
-                        fill="rgba(241, 245, 249, 0.45)"
-                        stroke="#64748b"
-                        strokeWidth="2.8"
-                      />
-
-                      {/* ── TOP BULB SAND ── */}
-                      <g clipPath="url(#topBulbClip)">
-                        <rect
-                          x="30"
-                          y="24"
-                          width="60"
-                          height="56"
-                          fill="url(#sandGradient)"
-                          className="sand-top-drain"
-                        />
-                        <ellipse cx="60" cy="27" rx="26" ry="5" fill="#fde68a" className="sand-top-lip" />
-                      </g>
-
-                      {/* ── SAND STREAM (CONTINUOUS FLOW) ── */}
-                      <line
-                        x1="60"
-                        y1="78"
-                        x2="60"
-                        y2="132"
-                        stroke="url(#sandGradient)"
-                        strokeWidth="3.5"
-                        strokeLinecap="round"
-                        className="sand-stream-flow"
-                      />
-
-                      {/* Micro Particles falling */}
-                      <circle cx="60" cy="85" r="1.8" fill="#fef08a" className="sand-particle p-1" />
-                      <circle cx="60.5" cy="100" r="2.2" fill="#f59e0b" className="sand-particle p-2" />
-                      <circle cx="59.5" cy="115" r="1.8" fill="#d97706" className="sand-particle p-3" />
-
-                      {/* ── BOTTOM BULB SAND MOUND ── */}
-                      <g clipPath="url(#bottomBulbClip)">
-                        <path
-                          d="M 26 136 Q 60 96 94 136 Z"
-                          fill="url(#sandGradient)"
-                          className="sand-bottom-heap"
-                        />
-                      </g>
-
-                      {/* Dynamic Micro Splashes */}
-                      <circle cx="55" cy="128" r="1.5" fill="#fde68a" className="sand-splash-dot s-1" />
-                      <circle cx="65" cy="129" r="1.4" fill="#fbbf24" className="sand-splash-dot s-2" />
-
-                      {/* Glass Curved Reflections & Highlights */}
-                      <path
-                        d="M 36 28 C 36 50, 52 64, 55 74"
-                        stroke="url(#glassReflection)"
-                        strokeWidth="3.5"
-                        strokeLinecap="round"
-                        fill="none"
-                      />
-                      <path
-                        d="M 36 130 C 36 112, 52 96, 55 86"
-                        stroke="url(#glassReflection)"
-                        strokeWidth="3.5"
-                        strokeLinecap="round"
-                        fill="none"
-                      />
-
-                      {/* Bottom Wood/Gold Plate */}
-                      <rect x="28" y="136" width="64" height="4" rx="2" fill="url(#darkFrame)" />
-                      <rect x="22" y="138" width="76" height="8" rx="4" fill="url(#goldTrim)" />
-                    </svg>
-
-                    {/* Orbiting Ring */}
-                    <div className="hourglass-orbit"></div>
+            <div className="announcement-body published-body">
+              {/* Left Column: Official Trophy Emblem */}
+              <div className="official-trophy-showcase">
+                <div className="trophy-badge-halo">
+                  <div className="trophy-emblem-circle">
+                    <span className="trophy-huge-icon">🏆</span>
+                    <span className="trophy-ribbon-tag">SELECTED</span>
                   </div>
-                  <div className="hourglass-shadow"></div>
+                  <div className="trophy-pedestal-text">SIH 2026</div>
                 </div>
               </div>
 
-              {/* Right Column: Announcement Message & Official Protocol */}
+              {/* Right Column: Official Statement */}
               <div className="announcement-content">
                 <div className="announcement-badge-line">
-                  <span className="official-hourglass-pill">
-                    ⏳ OFFICIAL SELECTION PROTOCOL
+                  <span className="official-declaration-pill">
+                    SELECTION DECLARATION
                   </span>
                 </div>
 
                 <h3 className="announcement-title">
-                  Wait for Result Announcement
+                  SIH 2026 – Selected Teams
                 </h3>
 
                 <p className="announcement-desc">
-                  The technical jury across all domain presentation tracks has formally concluded evaluations for the
-                  <strong> SIH 2026 Internal Round</strong>. The consolidated evaluation ledger for the <strong>50 Nominated Teams</strong> is
-                  currently undergoing final institutional administrative sign-off.
+                  Heartiest congratulations to all the innovators! Following thorough multi-track jury evaluations
+                  and institutional committee assessments, the following <strong>100 Teams</strong> have officially
+                  been selected in the <strong>Internal Round of Smart India Hackathon 2026</strong> at Shri Ramswaroop Memorial University.
                 </p>
 
-                {/* Evaluation Pipeline Progress Track */}
+                {/* Evaluation Protocol Status Track */}
                 <div className="pipeline-steps">
                   <div className="pipeline-step completed">
                     <span className="step-icon">✓</span>
                     <div className="step-info">
                       <span className="step-name">Pitch Evaluations</span>
-                      <span className="step-status">100% Completed</span>
+                      <span className="step-status">100% Concluded</span>
                     </div>
                   </div>
                   <div className="pipeline-arrow">&rarr;</div>
                   <div className="pipeline-step completed">
                     <span className="step-icon">✓</span>
                     <div className="step-info">
-                      <span className="step-name">Score Normalization</span>
-                      <span className="step-status">Verified by Jury</span>
+                      <span className="step-name">Jury Verification</span>
+                      <span className="step-status">Scores Certified</span>
                     </div>
                   </div>
                   <div className="pipeline-arrow">&rarr;</div>
-                  <div className="pipeline-step active">
-                    <span className="step-icon step-pulse">⏳</span>
+                  <div className="pipeline-step completed final-approved">
+                    <span className="step-icon">✓</span>
                     <div className="step-info">
-                      <span className="step-name">Institutional Sign-off</span>
-                      <span className="step-status">In Final Stages</span>
+                      <span className="step-name">Result Declaration</span>
+                      <span className="step-status">Officially Published</span>
                     </div>
-                  </div>
-                </div>
-
-                {/* Meta Highlights Row (Centered) */}
-                <div className="highlights-grid">
-                  <div className="highlight-item">
-                    <span className="highlight-number text-green">45</span>
-                    <span className="highlight-label">Shortlisted Teams</span>
-                  </div>
-                  <div className="highlight-item">
-                    <span className="highlight-number text-yellow">05</span>
-                    <span className="highlight-label">Waitlisted Teams</span>
                   </div>
                 </div>
 
@@ -327,23 +169,115 @@ export default function Results() {
         </section>
 
         {/* ═══════════════════════════════════════════
-            PROVISIONAL STANDINGS (50 SKELETON TEAMS LIST)
+            OFFICIAL 100 SELECTED TEAMS DIRECTORY
             ═══════════════════════════════════════════ */}
-        {SHOW_RESULTS_LIST && (
-          <section className="results-list-section reveal">
-            <div className="list-section-header">
-              <div className="list-title-group">
-                <h3 className="list-section-title">
-                  Qualifiers - SIH 2026 Internal Round
-                </h3>
+        <section className="results-list-section reveal">
+          <div className="list-section-header">
+            <div className="list-title-group">
+              <div className="list-title-badge-row">
+                <span className="selection-badge">OFFICIAL SELECTION ROSTER</span>
+                <span className="team-count-pill">{filteredTeams.length} of {selectedTeams.length} Teams</span>
               </div>
+              <h3 className="list-section-title">
+                List of Selected Teams in Internal Round SIH 2026
+              </h3>
+              <p className="list-section-subtitle">
+                Listed strictly in accordance with institutional committee selection order. Use search to locate your team quickly.
+              </p>
             </div>
 
-            <div className="results-list">
-              {Array.from({ length: totalTeams }).map((_, i) => renderSkeletonRow(i))}
+            {/* Instant Search Bar */}
+            <div className="results-search-wrapper">
+              <div className="search-input-box">
+                <svg className="search-svg-icon" viewBox="0 0 20 20" fill="currentColor" width="18" height="18">
+                  <path fillRule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clipRule="evenodd" />
+                </svg>
+                <input
+                  type="text"
+                  placeholder="Search by Team Name, Leader Name, or S.No..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="results-search-input"
+                  aria-label="Search selected teams"
+                />
+                {searchTerm && (
+                  <button
+                    onClick={() => setSearchTerm('')}
+                    className="clear-search-btn"
+                    title="Clear search"
+                  >
+                    ✕
+                  </button>
+                )}
+              </div>
             </div>
-          </section>
-        )}
+          </div>
+
+          {/* Teams Table / Cards List */}
+          {filteredTeams.length === 0 ? (
+            <div className="empty-search-state">
+              <div className="empty-search-icon-wrap">
+                <svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="currentColor" strokeWidth="2">
+                  <circle cx="11" cy="11" r="8"></circle>
+                  <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+              </div>
+              <h4>No matching teams found</h4>
+              <p>We couldn't find any team or leader matching "<strong>{searchTerm}</strong>".</p>
+              <button onClick={() => setSearchTerm('')} className="reset-search-btn">
+                Clear Filter &amp; View All 100 Teams
+              </button>
+            </div>
+          ) : (
+            <div className="teams-ledger">
+              <div className="ledger-header-row">
+                <div className="col-sno">S.No.</div>
+                <div className="col-team">Team Name</div>
+                <div className="col-leader">Team Leader Name</div>
+                <div className="col-status">Status</div>
+              </div>
+
+              <div className="ledger-body">
+                {filteredTeams.map((team) => {
+                  const isTop3 = team.rank <= 3;
+                  const rankBadgeClass = team.rank === 1 ? 'rank-gold' : team.rank === 2 ? 'rank-silver' : team.rank === 3 ? 'rank-bronze' : '';
+
+                  return (
+                    <div
+                      key={team.rank}
+                      className={`team-ledger-row ${isTop3 ? 'top-tier' : ''}`}
+                    >
+                      <div className="col-sno">
+                        <span className={`sno-badge ${rankBadgeClass}`}>
+                          {team.rank < 10 ? `0${team.rank}` : team.rank}
+                        </span>
+                      </div>
+
+                      <div className="col-team">
+                        <div className="team-name-text">
+                          {team.teamName}
+                        </div>
+                        <div className="leader-mobile-sub">
+                          <span className="leader-mobile-label">Leader:</span> {team.leaderName}
+                        </div>
+                      </div>
+
+                      <div className="col-leader">
+                        <span className="leader-name-text">{team.leaderName}</span>
+                      </div>
+
+                      <div className="col-status">
+                        <span className="status-selected-pill">
+                          Selected
+                        </span>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+        </section>
 
       </div>
     </div>
