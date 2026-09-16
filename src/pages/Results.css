@@ -634,9 +634,46 @@
 }
 
 .col-status {
-  width: 100px;
+  width: 140px;
   flex-shrink: 0;
-  text-align: right;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 7px;
+}
+
+.ledger-header-row .col-status {
+  justify-content: flex-end;
+  padding-right: 42px;
+}
+
+.team-share-btn {
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  color: #64748b;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+  flex-shrink: 0;
+  padding: 0;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.team-share-btn:hover {
+  background: rgba(16, 185, 129, 0.12);
+  border-color: rgba(16, 185, 129, 0.4);
+  color: #059669;
+  transform: translateY(-1px) scale(1.05);
+  box-shadow: 0 2px 5px rgba(16, 185, 129, 0.2);
+}
+
+.team-share-btn:active {
+  transform: translateY(0) scale(0.96);
 }
 
 .ledger-body {
@@ -743,7 +780,8 @@
   }
 
   .ledger-header-row .col-status {
-    width: 78px;
+    width: auto;
+    padding-right: 26px;
     text-align: right;
   }
 
@@ -790,9 +828,12 @@
     display: none;
   }
 
-  /* Right: Status Pill */
+  /* Right: Status Pill & Share Button */
   .col-status {
-    width: 76px;
+    width: auto;
+    display: flex;
+    align-items: center;
+    gap: 6px;
     flex-shrink: 0;
     text-align: right;
   }
@@ -801,6 +842,12 @@
     font-size: 0.64rem;
     padding: 3px 7px;
     letter-spacing: 0.2px;
+  }
+
+  .team-share-btn {
+    width: 20px;
+    height: 20px;
+    border-radius: 5px;
   }
 }
 

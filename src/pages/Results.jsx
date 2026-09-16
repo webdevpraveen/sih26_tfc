@@ -1,11 +1,13 @@
 import { useEffect, useState, useMemo } from 'react';
 import confetti from 'canvas-confetti';
 import { selectedTeams } from '../data/resultsData';
+import ShareCardModal from '../components/ShareCardModal';
 import './Results.css';
 
 export default function Results() {
   const [copied, setCopied] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
+  const [selectedTeamForShare, setSelectedTeamForShare] = useState(null);
 
   // Gentle minimal confetti on page load
   useEffect(() => {
@@ -282,6 +284,21 @@ export default function Results() {
                       <span className="status-selected-pill">
                         Selected
                       </span>
+                      <button
+                        type="button"
+                        onClick={() => setSelectedTeamForShare(team)}
+                        className="team-share-btn"
+                        title="Generate & Download Selection Card"
+                        aria-label={`Share card for ${team.teamName}`}
+                      >
+                        <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" strokeWidth="2.3">
+                          <circle cx="18" cy="5" r="3" />
+                          <circle cx="6" cy="12" r="3" />
+                          <circle cx="18" cy="19" r="3" />
+                          <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
+                          <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
+                        </svg>
+                      </button>
                     </div>
                   </div>
                 ))}
@@ -291,6 +308,12 @@ export default function Results() {
         </section>
 
       </div>
+
+      <ShareCardModal
+        team={selectedTeamForShare}
+        isOpen={Boolean(selectedTeamForShare)}
+        onClose={() => setSelectedTeamForShare(null)}
+      />
     </div>
   );
 }
