@@ -65,9 +65,7 @@ export default function Results() {
     return selectedTeams.filter(
       (team) =>
         team.teamName.toLowerCase().includes(query) ||
-        team.leaderName.toLowerCase().includes(query) ||
-        String(team.rank) === query ||
-        `#${team.rank}` === query
+        team.leaderName.toLowerCase().includes(query)
     );
   }, [searchTerm]);
 
@@ -222,7 +220,7 @@ export default function Results() {
                 </svg>
                 <input
                   type="text"
-                  placeholder="Search by Team Name, Leader Name, or S.No..."
+                  placeholder="Search by Team Name or Leader Name..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className="results-search-input"
@@ -259,7 +257,6 @@ export default function Results() {
           ) : (
             <div className="teams-ledger">
               <div className="ledger-header-row">
-                <div className="col-sno">S.No.</div>
                 <div className="col-team">Team Name</div>
                 <div className="col-leader">Team Leader Name</div>
                 <div className="col-status">Status</div>
@@ -268,32 +265,26 @@ export default function Results() {
               <div className="ledger-body">
                 {filteredTeams.map((team) => (
                   <div key={team.rank} className="team-ledger-row">
-                    <div className="col-sno">
-                      <span className="sno-badge">
-                        {team.rank < 10 ? `0${team.rank}` : team.rank}
+                    <div className="col-team">
+                      <div className="team-name-text">
+                        {team.teamName}
+                      </div>
+                      <div className="leader-mobile-sub">
+                        <span className="leader-mobile-label">Leader:</span> {team.leaderName}
+                      </div>
+                    </div>
+
+                    <div className="col-leader">
+                      <span className="leader-name-text">{team.leaderName}</span>
+                    </div>
+
+                    <div className="col-status">
+                      <span className="status-selected-pill">
+                        Selected
                       </span>
                     </div>
-
-                      <div className="col-team">
-                        <div className="team-name-text">
-                          {team.teamName}
-                        </div>
-                        <div className="leader-mobile-sub">
-                          <span className="leader-mobile-label">Leader:</span> {team.leaderName}
-                        </div>
-                      </div>
-
-                      <div className="col-leader">
-                        <span className="leader-name-text">{team.leaderName}</span>
-                      </div>
-
-                      <div className="col-status">
-                        <span className="status-selected-pill">
-                          Selected
-                        </span>
-                      </div>
-                    </div>
-                  ))}
+                  </div>
+                ))}
               </div>
             </div>
           )}
