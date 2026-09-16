@@ -27,65 +27,6 @@ export default function ShareCardModal({ team, isOpen, onClose }) {
     }
   }, []);
 
-  // Compute SVG immediately and synchronously - 0 ms delay!
-  const svgString = useMemo(() => {
-    if (!team) return '';
-
-    const clean = (s) => (s || '').toLowerCase().replace(/[^a-z0-9]/g, '');
-    const stNameClean = clean(team.teamName);
-    const stLeaderClean = clean(team.leaderName);
-
-    const sheetList = liveSheetData || teamsMembersData;
-    const matchedTeam = (sheetList || []).find((t) => {
-      const tNameClean = clean(t['Team Name']);
-      const tLeaderClean = clean(t['Member 1 (Leader)']);
-
-      // Exact name match
-      if (tNameClean === stNameClean) return true;
-
-      // Exact leader match
-      if (tLeaderClean && tLeaderClean === stLeaderClean) return true;
-
-      // Clean match without 2.0 / 2.o suffix
-      const baseT = tNameClean.replace(/20|2o/g, '');
-      const baseSt = stNameClean.replace(/20|2o/g, '');
-      if (baseT && baseT === baseSt) return true;
-
-      // Partial match with leader overlap
-      if (tNameClean.includes(baseSt) || baseSt.includes(tNameClean)) {
-        if (
-          tLeaderClean &&
-          stLeaderClean &&
-          (tLeaderClean.includes(stLeaderClean.slice(0, 4)) ||
-            stLeaderClean.includes(tLeaderClean.slice(0, 4)))
-        ) {
-          return true;
-        }
-      }
-
-      return false;
-    });
-
-    const leaderName = matchedTeam ? matchedTeam['Member 1 (Leader)'] || team.leaderName : team.leaderName;
-    const rawTeammates = matchedTeam
-      ? [
-        matchedTeam['Member 2'],
-        matchedTeam['Member 3'],
-        matchedTeam['Member 4'],
-        matchedTeam['Member 5'],
-        matchedTeam['Member 6'],
-      ].filter(Boolean)
-      : [];
-
-    return generateSvgContent({
-      teamName: team.teamName,
-      leaderName,
-      teammates: rawTeammates,
-      sihLogo: SIH_LOGO_BASE64,
-      srmuLogo: SRMU_LOGO_BASE64,
-    });
-  }, [team, liveSheetData]);
-
   // Generate SVG using the celebratory trophy card template (680x780)
   const generateSvgContent = ({ teamName, leaderName, teammates, sihLogo, srmuLogo }) => {
     const escapeXml = (str) =>
@@ -340,6 +281,65 @@ ${srmuLogo
 </svg>
 `;
   };
+
+  // Compute SVG immediately and synchronously - 0 ms delay!
+  const svgString = useMemo(() => {
+    if (!team) return '';
+
+    const clean = (s) => (s || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+    const stNameClean = clean(team.teamName);
+    const stLeaderClean = clean(team.leaderName);
+
+    const sheetList = liveSheetData || teamsMembersData;
+    const matchedTeam = (sheetList || []).find((t) => {
+      const tNameClean = clean(t['Team Name']);
+      const tLeaderClean = clean(t['Member 1 (Leader)']);
+
+      // Exact name match
+      if (tNameClean === stNameClean) return true;
+
+      // Exact leader match
+      if (tLeaderClean && tLeaderClean === stLeaderClean) return true;
+
+      // Clean match without 2.0 / 2.o suffix
+      const baseT = tNameClean.replace(/20|2o/g, '');
+      const baseSt = stNameClean.replace(/20|2o/g, '');
+      if (baseT && baseT === baseSt) return true;
+
+      // Partial match with leader overlap
+      if (tNameClean.includes(baseSt) || baseSt.includes(tNameClean)) {
+        if (
+          tLeaderClean &&
+          stLeaderClean &&
+          (tLeaderClean.includes(stLeaderClean.slice(0, 4)) ||
+            stLeaderClean.includes(tLeaderClean.slice(0, 4)))
+        ) {
+          return true;
+        }
+      }
+
+      return false;
+    });
+
+    const leaderName = matchedTeam ? matchedTeam['Member 1 (Leader)'] || team.leaderName : team.leaderName;
+    const rawTeammates = matchedTeam
+      ? [
+        matchedTeam['Member 2'],
+        matchedTeam['Member 3'],
+        matchedTeam['Member 4'],
+        matchedTeam['Member 5'],
+        matchedTeam['Member 6'],
+      ].filter(Boolean)
+      : [];
+
+    return generateSvgContent({
+      teamName: team.teamName,
+      leaderName,
+      teammates: rawTeammates,
+      sihLogo: SIH_LOGO_BASE64,
+      srmuLogo: SRMU_LOGO_BASE64,
+    });
+  }, [team, liveSheetData]);
 
   // Convert SVG string to PNG on high-DPI canvas for downloading
   const handleDownload = () => {
