@@ -1,117 +1,90 @@
-import { useEffect, useState, useRef } from 'react';
+import { useState, useEffect, useMemo, useRef } from 'react';
 import { fetchTeamsFromSheet } from '../services/sheetService';
+import { teamsMembersData } from '../data/teamsMembersData';
+import { SIH_LOGO_BASE64, SRMU_LOGO_BASE64 } from '../data/cardLogosData';
 import './ShareCardModal.css';
 
-// In-memory cache for sheet data & logo base64
-let cachedSheetData = null;
-let cachedSihBase64 = null;
-let cachedSrmuBase64 = null;
-
-// Convert image URL to Base64 data URL to prevent canvas tainting
-async function getBase64Image(url) {
-  try {
-    const res = await fetch(url);
-    const blob = await res.blob();
-    return new Promise((resolve) => {
-      const reader = new FileReader();
-      reader.onloadend = () => resolve(reader.result);
-      reader.readAsDataURL(blob);
-    });
-  } catch (err) {
-    console.error('Failed to load image as base64:', url, err);
-    return '';
-  }
-}
+// In-memory cache for any live sheet updates
+let cachedLiveSheetData = null;
 
 export default function ShareCardModal({ team, isOpen, onClose }) {
-  const [svgString, setSvgString] = useState('');
-  const [isGenerating, setIsGenerating] = useState(true);
+  const [liveSheetData, setLiveSheetData] = useState(cachedLiveSheetData || teamsMembersData);
+  const [isExporting, setIsExporting] = useState(false);
   const [copied, setCopied] = useState(false);
   const previewRef = useRef(null);
 
+  // Background non-blocking fetch to pick up any new sheet edits silently without delaying the UI
   useEffect(() => {
-    if (!isOpen || !team) return;
-
-    setIsGenerating(true);
-    setSvgString('');
-
-    const prepareAndBuildSvg = async () => {
-      // 1. Load sheet data (cached after first fetch)
-      let sheetList = cachedSheetData;
-      if (!sheetList) {
-        sheetList = await fetchTeamsFromSheet();
-        cachedSheetData = sheetList;
-      }
-
-      // 2. Load logos into Base64 (cached)
-      if (!cachedSihBase64) {
-        cachedSihBase64 = await getBase64Image('/sih-logos/sih.png');
-      }
-      if (!cachedSrmuBase64) {
-        cachedSrmuBase64 = await getBase64Image('/logos/srmu-crest.png');
-      }
-
-      // 3. Match team in sheet
-      const clean = (s) => (s || '').toLowerCase().replace(/[^a-z0-9]/g, '');
-      const stNameClean = clean(team.teamName);
-      const stLeaderClean = clean(team.leaderName);
-
-      const matchedTeam = (sheetList || []).find((t) => {
-        const tNameClean = clean(t['Team Name']);
-        const tLeaderClean = clean(t['Member 1 (Leader)']);
-
-        // Exact name match
-        if (tNameClean === stNameClean) return true;
-
-        // Exact leader match
-        if (tLeaderClean && tLeaderClean === stLeaderClean) return true;
-
-        // Clean match without 2.0 / 2.o suffix
-        const baseT = tNameClean.replace(/20|2o/g, '');
-        const baseSt = stNameClean.replace(/20|2o/g, '');
-        if (baseT && baseT === baseSt) return true;
-
-        // Partial match with leader overlap
-        if (tNameClean.includes(baseSt) || baseSt.includes(tNameClean)) {
-          if (
-            tLeaderClean &&
-            stLeaderClean &&
-            (tLeaderClean.includes(stLeaderClean.slice(0, 4)) ||
-              stLeaderClean.includes(tLeaderClean.slice(0, 4)))
-          ) {
-            return true;
+    if (!cachedLiveSheetData) {
+      fetchTeamsFromSheet()
+        .then((data) => {
+          if (data && data.length > 0) {
+            cachedLiveSheetData = data;
+            setLiveSheetData(data);
           }
+        })
+        .catch(() => {});
+    }
+  }, []);
+
+  // Compute SVG immediately and synchronously - 0 ms delay!
+  const svgString = useMemo(() => {
+    if (!team) return '';
+
+    const clean = (s) => (s || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+    const stNameClean = clean(team.teamName);
+    const stLeaderClean = clean(team.leaderName);
+
+    const sheetList = liveSheetData || teamsMembersData;
+    const matchedTeam = (sheetList || []).find((t) => {
+      const tNameClean = clean(t['Team Name']);
+      const tLeaderClean = clean(t['Member 1 (Leader)']);
+
+      // Exact name match
+      if (tNameClean === stNameClean) return true;
+
+      // Exact leader match
+      if (tLeaderClean && tLeaderClean === stLeaderClean) return true;
+
+      // Clean match without 2.0 / 2.o suffix
+      const baseT = tNameClean.replace(/20|2o/g, '');
+      const baseSt = stNameClean.replace(/20|2o/g, '');
+      if (baseT && baseT === baseSt) return true;
+
+      // Partial match with leader overlap
+      if (tNameClean.includes(baseSt) || baseSt.includes(tNameClean)) {
+        if (
+          tLeaderClean &&
+          stLeaderClean &&
+          (tLeaderClean.includes(stLeaderClean.slice(0, 4)) ||
+            stLeaderClean.includes(tLeaderClean.slice(0, 4)))
+        ) {
+          return true;
         }
+      }
 
-        return false;
-      });
+      return false;
+    });
 
-      const leaderName = matchedTeam ? matchedTeam['Member 1 (Leader)'] || team.leaderName : team.leaderName;
-      const rawTeammates = matchedTeam
-        ? [
-          matchedTeam['Member 2'],
-          matchedTeam['Member 3'],
-          matchedTeam['Member 4'],
-          matchedTeam['Member 5'],
-          matchedTeam['Member 6'],
-        ].filter(Boolean)
-        : [];
+    const leaderName = matchedTeam ? matchedTeam['Member 1 (Leader)'] || team.leaderName : team.leaderName;
+    const rawTeammates = matchedTeam
+      ? [
+        matchedTeam['Member 2'],
+        matchedTeam['Member 3'],
+        matchedTeam['Member 4'],
+        matchedTeam['Member 5'],
+        matchedTeam['Member 6'],
+      ].filter(Boolean)
+      : [];
 
-      // Build the SVG
-      const builtSvg = generateSvgContent({
-        teamName: team.teamName,
-        leaderName,
-        teammates: rawTeammates,
-        sihLogo: cachedSihBase64,
-        srmuLogo: cachedSrmuBase64,
-      });
-
-      setSvgString(builtSvg);
-      setIsGenerating(false);
-    };
-
-    prepareAndBuildSvg();
-  }, [isOpen, team]);
+    return generateSvgContent({
+      teamName: team.teamName,
+      leaderName,
+      teammates: rawTeammates,
+      sihLogo: SIH_LOGO_BASE64,
+      srmuLogo: SRMU_LOGO_BASE64,
+    });
+  }, [team, liveSheetData]);
 
   // Generate SVG using the celebratory trophy card template (680x780)
   const generateSvgContent = ({ teamName, leaderName, teammates, sihLogo, srmuLogo }) => {
@@ -370,67 +343,89 @@ ${srmuLogo
 
   // Convert SVG string to PNG on high-DPI canvas for downloading
   const handleDownload = () => {
-    if (!svgString) return;
+    if (!svgString || isExporting) return;
+    setIsExporting(true);
 
     const img = new Image();
     const svgBlob = new Blob([svgString], { type: 'image/svg+xml;charset=utf-8' });
     const url = URL.createObjectURL(svgBlob);
 
     img.onload = () => {
-      // 2x Retina resolution: 1360 x 1560 for crisp output
-      const canvas = document.createElement('canvas');
-      canvas.width = 1360;
-      canvas.height = 1560;
-      const ctx = canvas.getContext('2d');
-      ctx.drawImage(img, 0, 0, 1360, 1560);
-      URL.revokeObjectURL(url);
+      try {
+        // 2x Retina resolution: 1360 x 1560 for crisp output
+        const canvas = document.createElement('canvas');
+        canvas.width = 1360;
+        canvas.height = 1560;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, 1360, 1560);
+        URL.revokeObjectURL(url);
 
-      const a = document.createElement('a');
-      const cleanName = team.teamName.replace(/[^a-zA-Z0-9]/g, '_');
-      a.download = `SIH2026_Selected_${cleanName}.png`;
-      a.href = canvas.toDataURL('image/png');
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
+        const a = document.createElement('a');
+        const cleanName = team.teamName.replace(/[^a-zA-Z0-9]/g, '_');
+        a.download = `SIH2026_Selected_${cleanName}.png`;
+        a.href = canvas.toDataURL('image/png');
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      } finally {
+        setIsExporting(false);
+      }
+    };
+
+    img.onerror = () => {
+      URL.revokeObjectURL(url);
+      setIsExporting(false);
     };
 
     img.src = url;
   };
 
   const handleShare = async () => {
-    if (!svgString) return;
+    if (!svgString || isExporting) return;
+    setIsExporting(true);
 
     const img = new Image();
     const svgBlob = new Blob([svgString], { type: 'image/svg+xml;charset=utf-8' });
     const url = URL.createObjectURL(svgBlob);
 
     img.onload = async () => {
-      const canvas = document.createElement('canvas');
-      canvas.width = 1360;
-      canvas.height = 1560;
-      const ctx = canvas.getContext('2d');
-      ctx.drawImage(img, 0, 0, 1360, 1560);
-      URL.revokeObjectURL(url);
+      try {
+        const canvas = document.createElement('canvas');
+        canvas.width = 1360;
+        canvas.height = 1560;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, 1360, 1560);
+        URL.revokeObjectURL(url);
 
-      canvas.toBlob(async (blob) => {
-        if (!blob) return handleDownload();
-        const cleanName = team.teamName.replace(/[^a-zA-Z0-9]/g, '_');
-        const file = new File([blob], `SIH2026_Selected_${cleanName}.png`, { type: 'image/png' });
+        canvas.toBlob(async (blob) => {
+          setIsExporting(false);
+          if (!blob) return handleDownload();
+          const cleanName = team.teamName.replace(/[^a-zA-Z0-9]/g, '_');
+          const file = new File([blob], `SIH2026_Selected_${cleanName}.png`, { type: 'image/png' });
 
-        if (navigator.canShare && navigator.canShare({ files: [file] })) {
-          try {
-            await navigator.share({
-              files: [file],
-              title: `Team ${team.teamName} Selected in SIH 2026!`,
-              text: `🎉 Team ${team.teamName} is officially selected in SIH 2026 Internal Round at Shri Ramswaroop Memorial University!`,
-            });
-            return;
-          } catch (e) {
-            console.log('Share dismissed', e);
+          if (navigator.canShare && navigator.canShare({ files: [file] })) {
+            try {
+              await navigator.share({
+                files: [file],
+                title: `Team ${team.teamName} Selected in SIH 2026!`,
+                text: `🎉 Team ${team.teamName} is officially selected in SIH 2026 Internal Round at Shri Ramswaroop Memorial University!`,
+              });
+              return;
+            } catch (e) {
+              console.log('Share dismissed', e);
+            }
           }
-        }
+          handleDownload();
+        }, 'image/png');
+      } catch (err) {
+        setIsExporting(false);
         handleDownload();
-      }, 'image/png');
+      }
+    };
+
+    img.onerror = () => {
+      URL.revokeObjectURL(url);
+      setIsExporting(false);
     };
 
     img.src = url;
@@ -458,26 +453,19 @@ ${srmuLogo
           </p>
         </div>
 
-        {/* Live Card Preview */}
+        {/* Live Card Preview - Renders Instantly */}
         <div className="share-preview-wrapper light-card-preview" ref={previewRef}>
-          {isGenerating ? (
-            <div className="share-generating-box">
-              <div className="share-spinner"></div>
-              <span>Fetching team members &amp; generating graphic...</span>
-            </div>
-          ) : (
-            <div
-              className="svg-render-container"
-              dangerouslySetInnerHTML={{ __html: svgString }}
-            />
-          )}
+          <div
+            className="svg-render-container"
+            dangerouslySetInnerHTML={{ __html: svgString }}
+          />
         </div>
 
         {/* Action Buttons */}
         <div className="share-modal-actions">
           <button
             onClick={handleDownload}
-            disabled={isGenerating}
+            disabled={isExporting}
             className="share-action-btn primary-download-btn"
           >
             <svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16">
@@ -487,12 +475,12 @@ ${srmuLogo
                 clipRule="evenodd"
               />
             </svg>
-            Download Image (PNG)
+            {isExporting ? 'Generating PNG...' : 'Download Image (PNG)'}
           </button>
 
           <button
             onClick={handleShare}
-            disabled={isGenerating}
+            disabled={isExporting}
             className="share-action-btn secondary-share-btn"
           >
             <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2">
@@ -504,8 +492,6 @@ ${srmuLogo
             </svg>
             Share Card
           </button>
-
-
         </div>
       </div>
     </div>
