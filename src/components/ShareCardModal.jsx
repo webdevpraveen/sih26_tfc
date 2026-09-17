@@ -291,37 +291,65 @@ ${srmuLogo
     const stLeaderClean = clean(team.leaderName);
 
     const sheetList = liveSheetData || teamsMembersData;
-    const matchedTeam = (sheetList || []).find((t) => {
-      const tNameClean = clean(t['Team Name']);
-      const tLeaderClean = clean(t['Member 1 (Leader)']);
+    const baseSt = stNameClean.replace(/20|2o/g, '');
 
-      // Exact name match
-      if (tNameClean === stNameClean) return true;
+    const matchedTeam = (() => {
+      // Priority 1: Exact Team Name AND Exact Leader Name
+      let m = (sheetList || []).find((t) => {
+        const tNameClean = clean(t['Team Name']);
+        const tLeaderClean = clean(t['Member 1 (Leader)']);
+        return tNameClean === stNameClean && tLeaderClean === stLeaderClean;
+      });
+      if (m) return m;
 
-      // Exact leader match
-      if (tLeaderClean && tLeaderClean === stLeaderClean) return true;
+      // Priority 2: Exact Leader Match AND matching base team name (e.g. InnoVaTeX vs InnoVaTeX 2.0)
+      m = (sheetList || []).find((t) => {
+        const tNameClean = clean(t['Team Name']);
+        const tLeaderClean = clean(t['Member 1 (Leader)']);
+        const baseT = tNameClean.replace(/20|2o/g, '');
+        return tLeaderClean === stLeaderClean && (tNameClean === stNameClean || baseT === baseSt);
+      });
+      if (m) return m;
 
-      // Clean match without 2.0 / 2.o suffix
-      const baseT = tNameClean.replace(/20|2o/g, '');
-      const baseSt = stNameClean.replace(/20|2o/g, '');
-      if (baseT && baseT === baseSt) return true;
+      // Priority 3: Exact Leader Match alone
+      m = (sheetList || []).find((t) => {
+        const tLeaderClean = clean(t['Member 1 (Leader)']);
+        return tLeaderClean && tLeaderClean === stLeaderClean;
+      });
+      if (m) return m;
 
-      // Partial match with leader overlap
-      if (tNameClean.includes(baseSt) || baseSt.includes(tNameClean)) {
-        if (
-          tLeaderClean &&
-          stLeaderClean &&
-          (tLeaderClean.includes(stLeaderClean.slice(0, 4)) ||
-            stLeaderClean.includes(tLeaderClean.slice(0, 4)))
-        ) {
-          return true;
+      // Priority 4: Exact Team Name Match where leader has some overlap
+      m = (sheetList || []).find((t) => {
+        const tNameClean = clean(t['Team Name']);
+        const tLeaderClean = clean(t['Member 1 (Leader)']);
+        if (tNameClean === stNameClean) {
+          if (!tLeaderClean || !stLeaderClean) return true;
+          return tLeaderClean.includes(stLeaderClean.slice(0, 4)) || stLeaderClean.includes(tLeaderClean.slice(0, 4));
         }
-      }
+        return false;
+      });
+      if (m) return m;
 
-      return false;
-    });
+      // Priority 5: Exact Team Name Match
+      m = (sheetList || []).find((t) => clean(t['Team Name']) === stNameClean);
+      if (m) return m;
 
-    const leaderName = matchedTeam ? matchedTeam['Member 1 (Leader)'] || team.leaderName : team.leaderName;
+      // Priority 6: Base Team Name match ONLY IF leader has overlap
+      m = (sheetList || []).find((t) => {
+        const tNameClean = clean(t['Team Name']);
+        const tLeaderClean = clean(t['Member 1 (Leader)']);
+        const baseT = tNameClean.replace(/20|2o/g, '');
+        if (baseT === baseSt && baseT.length >= 4) {
+          if (tLeaderClean && stLeaderClean) {
+            return tLeaderClean.includes(stLeaderClean.slice(0, 4)) || stLeaderClean.includes(tLeaderClean.slice(0, 4));
+          }
+        }
+        return false;
+      });
+      return m || null;
+    })();
+
+    const leaderName = (matchedTeam ? (matchedTeam['Member 1 (Leader)'] || team.leaderName) : team.leaderName).trim();
     const rawTeammates = matchedTeam
       ? [
         matchedTeam['Member 2'],
@@ -329,7 +357,7 @@ ${srmuLogo
         matchedTeam['Member 4'],
         matchedTeam['Member 5'],
         matchedTeam['Member 6'],
-      ].filter(Boolean)
+      ].filter(Boolean).map((s) => s.trim())
       : [];
 
     return generateSvgContent({

@@ -580,7 +580,7 @@ export const teamsMembersData = [
     "Verified": true
   },
   {
-    "Team Name": "InnoVateX",
+    "Team Name": "InnoVateX 2.0",
     "Member 1 (Leader)": "Manas Tiwari ",
     "Member 2": "Animay Singh Baghel ",
     "Member 3": "Somendra Singh ",
