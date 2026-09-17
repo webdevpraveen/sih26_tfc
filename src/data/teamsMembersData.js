@@ -230,7 +230,7 @@ export const teamsMembersData = [
     "Verified": true
   },
   {
-    "Team Name": "SYNTAX SQUAD",
+    "Team Name": "SYNTAX SQUAD 2.0",
     "Member 1 (Leader)": "AYUSH DUBEY",
     "Member 2": "UTKARSH PANDEY",
     "Member 3": "ANMOL SHUKLA",
@@ -890,7 +890,7 @@ export const teamsMembersData = [
     "Verified": true
   },
   {
-    "Team Name": "Nexora ",
+    "Team Name": "Nexora 2.0",
     "Member 1 (Leader)": "Aman singh ",
     "Member 2": "Tanu Sharma",
     "Member 3": "Nidhi maurya ",

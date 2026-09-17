@@ -311,14 +311,7 @@ ${srmuLogo
       });
       if (m) return m;
 
-      // Priority 3: Exact Leader Match alone
-      m = (sheetList || []).find((t) => {
-        const tLeaderClean = clean(t['Member 1 (Leader)']);
-        return tLeaderClean && tLeaderClean === stLeaderClean;
-      });
-      if (m) return m;
-
-      // Priority 4: Exact Team Name Match where leader has some overlap
+      // Priority 3: Exact Team Name Match where leader has some overlap
       m = (sheetList || []).find((t) => {
         const tNameClean = clean(t['Team Name']);
         const tLeaderClean = clean(t['Member 1 (Leader)']);
@@ -330,8 +323,15 @@ ${srmuLogo
       });
       if (m) return m;
 
-      // Priority 5: Exact Team Name Match
+      // Priority 4: Exact Team Name Match alone
       m = (sheetList || []).find((t) => clean(t['Team Name']) === stNameClean);
+      if (m) return m;
+
+      // Priority 5: Exact Leader Match alone
+      m = (sheetList || []).find((t) => {
+        const tLeaderClean = clean(t['Member 1 (Leader)']);
+        return tLeaderClean && tLeaderClean === stLeaderClean;
+      });
       if (m) return m;
 
       // Priority 6: Base Team Name match ONLY IF leader has overlap
